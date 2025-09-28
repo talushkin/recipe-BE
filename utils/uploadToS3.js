@@ -30,6 +30,5 @@ const uploadBufferToS3 = async (buffer, fileName) => {
   }
 };
 
-module.exports = {
-  uploadBufferToS3,
-};
+// Export the function directly for compatibility with destructured imports
+module.exports.uploadBufferToS3 = uploadBufferToS3;

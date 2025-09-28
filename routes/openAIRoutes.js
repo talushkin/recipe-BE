@@ -1,14 +1,16 @@
 const express = require("express");
 const router = express.Router();
 const auth = require("../middlewares/auth");
-const { 
-  translateDirectly, 
-  createPictureFromText, 
-  fillRecipe, 
-  getSongListFromOpenAI, 
-  getSongLyricsSRT, 
-  getSongLyricsChords, 
-  getReactQuestion
+const {
+  translateDirectly,
+  createPictureFromText,
+  fillRecipe,
+  getSongListFromOpenAI,
+  getSongLyricsSRT,
+  getSongLyricsChords,
+  getReactQuestion,
+  extractReceiptDataFromImage,
+  uploadBufferToS3
 } = require("../controllers/openAIController");
 
 const { 
@@ -18,6 +20,17 @@ const {
   getSong10Words,
   getPlaylistById
 } = require("../controllers/youTubeController");
+const multer = require("multer");
+const upload = multer();
+const path = require("path");
+const fs = require("fs");
+
+// Ensure uploads directory exists before saving file
+const uploadsDir = path.join(__dirname, "../uploads");
+if (!fs.existsSync(uploadsDir)) {
+  fs.mkdirSync(uploadsDir);
+}
+
 // Route for fetching lyrics and chords for a song (OpenAI fallback)
 router.post("/get-song-lyrics-chords", auth, async (req, res) => {
   try {
@@ -203,6 +216,100 @@ router.post("/react-questionaire", auth, async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: error.message || "Internal Server Error", details: error.details || error?.response?.data });
+  }
+});
+
+// Route for uploading a receipt image and extracting data using AI
+router.post("/pic2hesh", auth, upload.single("image"), async (req, res) => {
+  try {
+    // If ?url= param is provided, use it for analysis only (no upload)
+    const s3Url = req.query.url;
+    if (s3Url) {
+      // Direct S3 URL analysis
+      const receiptData = await extractReceiptDataFromImage({ imageUrl: s3Url });
+      return res.status(200).json({ imageUrl: s3Url, receiptData });
+    }
+    // Validate file presence
+    if (!req.file) {
+      return res.status(400).json({ error: "No file provided" });
+    }
+    // Validate file selection
+    if (!req.file.originalname) {
+      return res.status(400).json({ error: "No file selected" });
+    }
+    // Validate file extension
+    const allowedExtensions = [".jpg", ".jpeg", ".png"];
+    const ext = path.extname(req.file.originalname).toLowerCase();
+    if (!allowedExtensions.includes(ext)) {
+      return res.status(400).json({ error: "Invalid file type. Only JPG, JPEG, and PNG files are allowed" });
+    }
+    // Save uploaded file temporarily
+    const timestamp = new Date().toISOString().replace(/[-:.TZ]/g, "");
+    const filename = `${timestamp}_${req.file.originalname}`;
+    const tempPath = path.join(__dirname, "../uploads", filename);
+    const fs = require("fs");
+    const uploadsDir = path.join(__dirname, "../uploads");
+    if (!fs.existsSync(uploadsDir)) {
+      fs.mkdirSync(uploadsDir);
+    }
+    fs.writeFileSync(tempPath, req.file.buffer);
+    // TODO: Validate image (stub)
+    // TODO: Implement validateImage(tempPath) and remove file if invalid
+    // Upload to S3
+    const imageUrl = await uploadBufferToS3(req.file.buffer, filename);
+    // Extract receipt data using S3 URL
+    let receiptData = await extractReceiptDataFromImage({ imageUrl });
+    // TODO: Handle rotation if needed (stub)
+    // TODO: Implement rotation logic and re-upload if required
+    // Prepare response
+    const image_filename = path.basename(tempPath);
+    if (receiptData.error) {
+      // Partial result for validation warnings
+      const partial = {
+        shopName: receiptData.shopName || "",
+        amount: receiptData.amount || 0.0,
+        date: receiptData.date || "",
+        time: receiptData.time,
+        receiptNumber: receiptData.receiptNumber || "",
+        originalAngle: receiptData.originalAngle || 0,
+        boundingBoxes: receiptData.boundingBoxes || {},
+        image_url: `/uploads/${image_filename}`,
+        validated: false,
+        message: receiptData.error,
+        s3_url: imageUrl,
+        analysis_method: "s3_url",
+        prompt: receiptData.prompt || "",
+        raw_response: receiptData.raw_response || ""
+      };
+      return res.status(200).json(partial);
+    }
+    // Success path: Save to CSV (stub)
+    // TODO: Implement saveToCSV logic
+    receiptData.image_path = image_filename;
+    receiptData.s3_url = imageUrl;
+    // Prepare response
+    const response_data = {
+      shopName: receiptData.shopName,
+      amount: receiptData.amount,
+      date: receiptData.date,
+      time: receiptData.time,
+      receiptNumber: receiptData.receiptNumber,
+      originalAngle: receiptData.originalAngle || 0,
+      boundingBoxes: receiptData.boundingBoxes || {},
+      image_url: `/uploads/${image_filename}`,
+      expenseId: receiptData.id,
+      s3_url: imageUrl,
+      confidence: receiptData.confidence || "medium",
+      analysis_method: "s3_url",
+      prompt: receiptData.prompt || "",
+      raw_response: receiptData.raw_response || ""
+    };
+    // TODO: Add CSV save result to response
+    response_data.message = "Data successfully extracted";
+    return res.status(200).json(response_data);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: error.message || "Internal server error", details: error });
   }
 });
 

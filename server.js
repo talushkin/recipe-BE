@@ -17,6 +17,9 @@ const PORT = process.env.PORT || 5000;
 const connectionString = process.env.MONGODB_CONNECTION_STRING || "mongodb://localhost:27017/recipes";
 
 app.use(cors());
+// Mount multer routes BEFORE any body parser
+app.use("/api/ai", openAIRoutes);
+// Only use body parsers for non-file-upload routes
 app.use(express.json());
 app.use(logger); // 👈 מוסיפים אותו לפני הרואטרים
 
@@ -28,7 +31,6 @@ mongoose.connect(connectionString, {
 
 app.use("/api/recipes", recipeRoutes);
 app.use("/api/categories", categoryRoutes);
-app.use("/api/ai", openAIRoutes);
 app.use("/api/spotify", spotifyRoutes);
 app.use("/api/youtube", youTubeRoutes);
 

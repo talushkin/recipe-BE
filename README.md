@@ -1,10 +1,67 @@
-# recipes-BE
-recipes backend server on port 3333 for vercel
+# Recipe Backend Microservices
 
-## API Endpoints
+🚀 **Modernized microservices architecture** with Docker containers and Kubernetes orchestration.
 
-### Auth
-> All endpoints require `Authorization: Bearer <TOKEN>` header.
+## 📋 Prerequisites
+
+- **Docker Desktop** for Windows
+- **PowerShell 5.1+** (Windows PowerShell)  
+- **Node.js 18+** (for development)
+
+## 🚀 Quick Start
+
+### Method 1: Interactive Setup
+```powershell
+# Check Docker status
+.\docker-check.ps1
+
+# Interactive deployment menu
+.\quickstart.ps1
+```
+
+### Method 2: Manual Steps
+```powershell
+# 1. Build all images
+.\build.bat
+
+# 2. Deploy services
+.\deploy.ps1
+
+# 3. Test services  
+.\test.ps1
+
+# 4. Check status
+.\status.ps1
+```
+
+## 🧪 Testing with PowerShell
+
+### Health Checks
+```powershell
+# API Gateway health
+Invoke-RestMethod -Uri "http://localhost:5000/health" -Method Get
+
+# All services health (automated)
+.\status.ps1
+```
+
+### API Testing
+```powershell
+# Test OpenAI service
+$headers = @{ "Authorization" = "Bearer 1234"; "Content-Type" = "application/json" }
+$body = @{ numberOfQuestions = 1; numberOfPossibleAnswers = 4 } | ConvertTo-Json
+Invoke-RestMethod -Uri "http://localhost:5000/api/ai/react-questionaire" -Method Post -Headers $headers -Body $body
+
+# Test Spotify login
+$headers = @{ "Authorization" = "Bearer 1234"; "Content-Type" = "application/json" }
+$body = @{} | ConvertTo-Json
+Invoke-RestMethod -Uri "http://localhost:5000/api/spotify/login" -Method Post -Headers $headers -Body $body
+
+# Test YouTube search
+$headers = @{ "Authorization" = "Bearer 1234"; "Content-Type" = "application/json" }
+$body = @{ artist = "Coldplay"; title = "Yellow" } | ConvertTo-Json
+Invoke-RestMethod -Uri "http://localhost:5000/api/youtube/get-song-list" -Method Post -Headers $headers -Body $body
+```
 
 ---
 

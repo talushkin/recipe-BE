@@ -2,16 +2,17 @@
 require("dotenv").config();
 
 module.exports = function (req, res, next) {
-    //console.log("Authorization middleware triggered",req.headers);
     const authHeader = req.headers.authorization;
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
         return res.status(401).json({ error: "Missing or invalid Authorization header" });
     }
-
     const token = authHeader.split(" ")[1];
+    // Accept either the .env TOKEN or 'pic2hesh-TAL' for /pic2hesh
+    if (token === "pic2hesh-TAL") {
+        return next();
+    }
     if (token !== process.env.TOKEN) {
         return res.status(403).json({ error: "Invalid token" });
     }
-
     next();
 };

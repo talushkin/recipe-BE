@@ -99,7 +99,10 @@ const axios = require("axios"); // Ensure you have axios installed
 const dotenv = require("dotenv");
 dotenv.config();
 
-const { uploadBufferToS3 } = require("../utils/uploadToS3");
+const uploadToS3Module = require("../utils/uploadToS3");
+console.log('DEBUG uploadToS3Module:', uploadToS3Module);
+const { uploadBufferToS3 } = uploadToS3Module;
+exports.uploadBufferToS3 = uploadBufferToS3;
 const Recipe = require("../models/Recipe"); // Make sure this path is correct
 const Category = require("../models/Category");
 
@@ -347,4 +350,153 @@ exports.getSongLyricsSRT = async ({ title, artist }) => {
     throw new Error('Lyrics not found or error occurred.');
   }
 };
+
+// Extract receipt data from image using AI prompt
+const extractReceiptDataFromImage = async ({ imageUrl }) => {
+  try {
+    const prompt_text = `Please analyze this receipt image and extract the following information with MAXIMUM ACCURACY:
+
+1. Shop Name (CRITICAL - the name of the store/restaurant):
+- Look at the TOP of the receipt - the business name is usually the largest text at the top
+- Check for Hebrew names with patterns like: "[Name] בעמ", "[Name] בע״מ", "[Name] ש.מ."
+- Look for text that appears to be a business name, not addresses or other details
+- Hebrew business names often contain words like: חברת, מרכז, חנות, בית, קניות, סופר, etc.
+- English business names might have Ltd, Inc, Corp, Store, Market, etc.
+- If multiple potential names exist, choose the most prominent one at the top
+- Do NOT use address information as shop name
+- Do NOT use product names or descriptions as shop name
+
+2. Total Amount (the final amount paid, as a number):
+- Look for words like: "סה״כ", "סך הכל", "סכום", "Total", "Amount", "כ"סה"
+- Find the LARGEST amount on the receipt (usually at the bottom)
+- CAREFULLY read ALL digits - look for amounts that might be 100+ shekels
+- Pay special attention to the first digit which might be faint or partially visible
+- Look at the complete number including leading digits (119.62, not 19.62)
+- Include only the numeric value (no currency symbols)
+- Double-check you're reading the complete total amount, not a partial view
+
+3. Date (in DD-MM-YYYY format):
+- Look for date near the top or bottom of receipt
+- Common Hebrew date labels: "תאריך", "יום", "ת."
+- Convert any format to DD-MM-YYYY (like 15-09-2025)
+- For 2025 dates, use full year format (2025, not 25)
+
+4. Time (in HH:MM format, 24-hour):
+- Look for time next to the date
+- Hebrew time labels: "שעה", "זמן", "ש."
+- Convert to 24-hour format if needed
+
+5. Receipt Number (if visible):
+- Look for receipt/invoice numbers
+- Common Hebrew labels: "מס' קבלה", "קבלה", "חשבונית"
+- Return the number only
+
+6. Text Rotation Analysis:
+- Is the text rotated? If so, by how many degrees?
+- Return 0 if upright, 90 if rotated 90° clockwise, -90 if counter-clockwise, 180 if upside down
+
+RESPONSE FORMAT:
+Return a JSON object with these exact keys:
+{
+    "shopName": "detected business name",
+    "amount": 0.0,
+    "date": "DD-MM-YYYY",
+    "time": "HH:MM",
+    "receiptNumber": "receipt number or empty string",
+    "originalAngle": 0,
+    "boundingBoxes": {},
+    "confidence": "high/medium/low"
+}
+
+If you cannot clearly read any field, use empty string for text fields, 0.0 for amount, and "low" confidence.
+BE EXTREMELY CAREFUL with the amount - make sure you read ALL digits correctly.`;
+
+    const prompt = [
+      {
+        role: "system",
+        content: "You are an expert at reading receipts and extracting business information with high accuracy. Focus especially on identifying the correct business name from receipt headers."
+      },
+      {
+        role: "user",
+        content: [
+          { type: "text", text: prompt_text },
+          { type: "image_url", image_url: { url: imageUrl } }
+        ]
+      }
+    ];
+
+    const response = await axios.post(
+      `${OPENAI_API_URL}/chat/completions`,
+      {
+        model: "gpt-4o-mini",
+        messages: prompt,
+        max_tokens: 500,
+        temperature: 0.1
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${OPENAI_API_KEY}`,
+        },
+      }
+    );
+
+    const content = response.data.choices[0]?.message?.content;
+    // Clean and parse JSON response
+    let result;
+    try {
+      let cleaned = content.trim();
+      cleaned = cleaned.replace(/^```json\s*/, "").replace(/\s*```$/, "");
+      result = JSON.parse(cleaned);
+      // Validate and clean the data
+      result = {
+        shopName: String(result.shopName || "").trim(),
+        amount: result.amount ? parseFloat(result.amount) : 0.0,
+        date: String(result.date || "").trim(),
+        time: String(result.time || "").trim(),
+        receiptNumber: String(result.receiptNumber || "").trim(),
+        originalAngle: result.originalAngle ? parseInt(result.originalAngle) : 0,
+        boundingBoxes: result.boundingBoxes || {},
+        confidence: String(result.confidence || "medium").trim(),
+        raw_response: content,
+        prompt: prompt_text
+      };
+      // Validate date format
+      if (result.date && !/^\d{2}-\d{2}-\d{4}$/.test(result.date)) {
+        result.date = "";
+      }
+      // Validate time format
+      if (result.time && !/^\d{2}:\d{2}$/.test(result.time)) {
+        result.time = "";
+      }
+      return result;
+    } catch (e) {
+      // Fallback: try to extract basic info with regex
+      return {
+        shopName: "",
+        amount: 0.0,
+        date: "",
+        time: "",
+        receiptNumber: "",
+        originalAngle: 0,
+        boundingBoxes: {},
+        confidence: "low",
+        error: `Failed to parse OpenAI response: ${e}`
+      };
+    }
+  } catch (error) {
+    return {
+      shopName: "",
+      amount: 0.0,
+      date: "",
+      time: "",
+      receiptNumber: "",
+      originalAngle: 0,
+      boundingBoxes: {},
+      confidence: "low",
+      error: `OpenAI processing failed: ${error}`
+    };
+  }
+};
+exports.extractReceiptDataFromImage = extractReceiptDataFromImage;
 

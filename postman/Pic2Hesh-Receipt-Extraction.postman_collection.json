@@ -1,0 +1,41 @@
+{
+  "info": {
+    "name": "Pic2Hesh Receipt Extraction",
+    "description": "Test /api/ai/pic2hesh endpoint for receipt image upload and extraction.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "version": "1.0.0"
+  },
+  "item": [
+    {
+      "name": "POST /api/ai/pic2hesh",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer pic2hesh-TAL",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "image",
+              "type": "file",
+              "src": "./images/receipt.jpg"
+            }
+          ]
+        },
+        "url": {
+          "raw": "http://localhost:5000/api/ai/pic2hesh",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "ai", "pic2hesh"]
+        }
+      },
+      "response": []
+    }
+  ]
+}
