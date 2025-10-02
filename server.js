@@ -10,6 +10,7 @@ const recipeRoutes = require("./routes/recipesRoutes");
 const openAIRoutes = require("./routes/openAIRoutes");
 const spotifyRoutes = require("./routes/spotifyRoutes");
 const youTubeRoutes = require("./routes/youTubeRoutes");
+const googleAuthRoutes = require("./routes/googleAuthRoutes");
 const logger = require("./middlewares/logger"); // 👈 מוסיפים את ה-logger
 
 const app = express();
@@ -33,6 +34,15 @@ app.use("/api/recipes", recipeRoutes);
 app.use("/api/categories", categoryRoutes);
 app.use("/api/spotify", spotifyRoutes);
 app.use("/api/youtube", youTubeRoutes);
+app.use("/api/google", googleAuthRoutes);
+
+// Serve static files (for auth page)
+app.use(express.static('.'));
+
+// Authentication page route
+app.get("/auth", (req, res) => {
+    res.sendFile(__dirname + "/auth.html");
+});
 
 
 const swaggerUiOptions = {
@@ -76,6 +86,11 @@ app.get("/", (req, res) => {
                 translate: "POST /api/ai/translate",
                 image: "POST /api/ai/image",
                 fillRecipe: "POST /api/ai/fill-recipe"
+            },
+            googleAuth: {
+                signIn: "POST /api/google/auth",
+                updateBusiness: "POST /api/google/user/business",
+                getUser: "GET /api/google/user/:googleSub"
             }
         },
         TOKEN: process.env.TOKEN,

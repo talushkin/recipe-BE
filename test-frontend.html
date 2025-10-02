@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Auth Test</title>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 5px;
+            text-align: left;
+            font-family: monospace;
+            white-space: pre-wrap;
+        }
+        .success { background: #d4edda; border: 1px solid #c3e6cb; color: #155724; }
+        .error { background: #f8d7da; border: 1px solid #f5c6cb; color: #721c24; }
+        .info { background: #d1ecf1; border: 1px solid #bee5eb; color: #0c5460; }
+        #google-signin { margin: 20px 0; }
+        button {
+            background: #4285f4;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover { background: #3367d6; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 Google Authentication Test</h1>
+        <p>This page will test your Google authentication with your actual Client ID</p>
+        
+        <div id="google-signin"></div>
+        <div id="status">Please sign in with Google to test your backend</div>
+        
+        <div id="user-info" style="display: none;">
+            <h3>User Info:</h3>
+            <div id="user-details"></div>
+            <button onclick="testBusinessUpdate()">Test Business Update</button>
+            <button onclick="testGetUser()">Test Get User</button>
+        </div>
+        
+        <div id="results"></div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:5000';
+        let currentUser = null;
+
+        // Handle Google Sign-In response
+        function handleCredentialResponse(response) {
+            const idToken = response.credential;
+            
+            showResult('info', 'ID Token received, testing with backend...');
+            
+            // Test with your backend
+            fetch(`${API_BASE}/api/google/auth`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ idToken })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    currentUser = data.user;
+                    showResult('success', `✅ SUCCESS!\nStatus: ${data.status}\nUser: ${data.user.name}\nEmail: ${data.user.email}\nGoogle Sub: ${data.user.googleSub}`);
+                    
+                    document.getElementById('user-details').innerHTML = `
+                        <strong>Name:</strong> ${data.user.name}<br>
+                        <strong>Email:</strong> ${data.user.email}<br>
+                        <strong>Google Sub:</strong> ${data.user.googleSub}<br>
+                        <strong>Business Completed:</strong> ${data.user.businessCompleted}
+                    `;
+                    document.getElementById('user-info').style.display = 'block';
+                    document.getElementById('google-signin').style.display = 'none';
+                } else {
+                    showResult('error', `❌ ERROR: ${data.message}`);
+                }
+            })
+            .catch(error => {
+                showResult('error', `❌ Network Error: ${error.message}`);
+            });
+        }
+
+        // Test business update
+        function testBusinessUpdate() {
+            const businessData = {
+                googleSub: currentUser.googleSub,
+                businessName: "Test Restaurant",
+                ownerName: currentUser.name,
+                businessNumber: "123456789",
+                address: "123 Test Street",
+                city: "Tel Aviv",
+                zip: "12345",
+                phone: "03-1234567"
+            };
+
+            fetch(`${API_BASE}/api/google/user/business`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(businessData)
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    showResult('success', `✅ Business Update SUCCESS!\nBusiness: ${data.user.business.businessName}\nOwner: ${data.user.business.ownerName}\nCompleted: ${data.user.businessCompleted}`);
+                } else {
+                    showResult('error', `❌ Business Update ERROR: ${data.message}`);
+                }
+            })
+            .catch(error => {
+                showResult('error', `❌ Network Error: ${error.message}`);
+            });
+        }
+
+        // Test get user
+        function testGetUser() {
+            fetch(`${API_BASE}/api/google/user/${currentUser.googleSub}`)
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    showResult('success', `✅ Get User SUCCESS!\nUser retrieved successfully with all data!`);
+                } else {
+                    showResult('error', `❌ Get User ERROR: ${data.message}`);
+                }
+            })
+            .catch(error => {
+                showResult('error', `❌ Network Error: ${error.message}`);
+            });
+        }
+
+        // Show result
+        function showResult(type, message) {
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = `<div class="${type}">${message}</div>`;
+        }
+
+        // Initialize Google Sign-In
+        window.onload = () => {
+            google.accounts.id.initialize({
+                client_id: '725562539587-foe12tkg7qqqd2st01lv32ls4dr8k90j.apps.googleusercontent.com',
+                callback: handleCredentialResponse
+            });
+            
+            google.accounts.id.renderButton(
+                document.getElementById('google-signin'),
+                { 
+                    theme: "outline", 
+                    size: "large",
+                    text: "signin_with",
+                    width: 250
+                }
+            );
+            
+            google.accounts.id.prompt(); // Auto-show the One Tap dialog
+        };
+    </script>
+</body>
+</html>

@@ -88,3 +88,28 @@ Content-Type: application/json
   "numberOfQuestions": 5,
   "numberOfPossibleAnswers": 3
 }
+
+### Test /api/ai/pic2hesh receipt extraction (S3 URL, live)
+POST {{baseUrl}}/api/ai/pic2hesh?url=https://vt-photos.s3.amazonaws.com/receipt.jpg
+Authorization: Bearer pic2hesh-TAL
+
+### Expected response
+# {
+#   "imageUrl": "https://...s3.amazonaws.com/receipt.jpg",
+#   "receiptData": {
+#     "shopName": "...",
+#     "amount": 123.45,
+#     "date": "2025-09-27",
+#     "time": "12:34",
+#     "receiptNumber": "...",
+#     "boundingBoxes": {
+#       "shopName": { "x": 0.12, "y": 0.08, "x1": 0.32, "y1": 0.12 },
+#       "amount": { "x": 0.65, "y": 0.85, "x1": 0.85, "y1": 0.90 },
+#       ...
+#     },
+#     ...other fields...
+#   }
+# }
+
+# boundingBoxes values are relative to image size (percent, 0-1)
+# Use in heshbit app for field location overlay

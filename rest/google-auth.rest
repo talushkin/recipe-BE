@@ -1,0 +1,135 @@
+###
+# Google Authentication REST API Tests
+# Base URL: http://localhost:5000
+###
+
+@baseUrl = http://localhost:5000
+
+### 1. Test Server Status
+GET {{baseUrl}}/
+Content-Type: application/json
+
+###
+
+### 2. Google Sign-In - Missing Token (Should fail with 400)
+POST {{baseUrl}}/api/google/auth
+Content-Type: application/json
+
+{
+}
+
+###
+
+### 3. Google Sign-In - Invalid Token (Should fail with 401)
+POST {{baseUrl}}/api/google/auth
+Content-Type: application/json
+
+{
+  "idToken": "invalid_token_123_this_should_fail"
+}
+
+###
+
+### 4. Google Sign-In - Valid Token (Replace with real Google ID token)
+# To get a real token: 
+# 1. Go to https://developers.google.com/oauthplayground/
+# 2. Select Google+ API v1 
+# 3. Authorize and get ID token
+# OR use a frontend with Google Sign-In button
+POST {{baseUrl}}/api/google/auth
+Content-Type: application/json
+
+{
+  "idToken": "REPLACE_WITH_REAL_GOOGLE_ID_TOKEN"
+}
+
+###
+
+### 5. Update Business Info - Missing Fields (Should fail with 400)
+POST {{baseUrl}}/api/google/user/business
+Content-Type: application/json
+
+{
+  "googleSub": "test_google_sub_123",
+  "businessName": "Test Business"
+}
+
+###
+
+### 6. Update Business Info - User Not Found (Should fail with 404)
+POST {{baseUrl}}/api/google/user/business
+Content-Type: application/json
+
+{
+  "googleSub": "non_existent_user_123",
+  "businessName": "Test Business",
+  "ownerName": "John Doe",
+  "businessNumber": "123456789",
+  "address": "123 Test Street",
+  "city": "Tel Aviv",
+  "zip": "12345",
+  "phone": "03-1234567"
+}
+
+###
+
+### 7. Update Business Info - Valid Request (Replace googleSub with real user)
+POST {{baseUrl}}/api/google/user/business
+Content-Type: application/json
+
+{
+  "googleSub": "REPLACE_WITH_REAL_GOOGLE_SUB",
+  "businessName": "My Amazing Restaurant",
+  "ownerName": "Chef John Doe",
+  "businessNumber": "987654321",
+  "address": "456 Main Street",
+  "city": "Tel Aviv",
+  "zip": "67890",
+  "phone": "03-9876543"
+}
+
+###
+
+### 8. Get User by Google Sub - Not Found (Should fail with 404)
+GET {{baseUrl}}/api/google/user/non_existent_user_123
+Content-Type: application/json
+
+###
+
+### 9. Get User by Google Sub - Valid Request (Replace with real googleSub)
+GET {{baseUrl}}/api/google/user/REPLACE_WITH_REAL_GOOGLE_SUB
+Content-Type: application/json
+
+###
+
+### 10. Test Complete Flow - After successful Google sign-in
+# Step 1: Sign in with Google (use real token)
+# Step 2: Copy the googleSub from response
+# Step 3: Update business info using that googleSub
+# Step 4: Get user details to verify
+
+### Example Complete Flow:
+# POST {{baseUrl}}/api/google/auth
+# Content-Type: application/json
+# {
+#   "idToken": "REAL_GOOGLE_TOKEN"
+# }
+# 
+# Copy googleSub from response, then:
+# POST {{baseUrl}}/api/google/user/business  
+# Content-Type: application/json
+# {
+#   "googleSub": "COPIED_GOOGLE_SUB",
+#   "businessName": "Test Restaurant",
+#   "ownerName": "Test Owner",
+#   "businessNumber": "123456789",
+#   "address": "Test Address",
+#   "city": "Test City", 
+#   "zip": "12345",
+#   "phone": "123-456-7890"
+# }
+#
+# Finally verify:
+# GET {{baseUrl}}/api/google/user/COPIED_GOOGLE_SUB
+
+###

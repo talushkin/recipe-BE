@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Authentication - Recipes App</title>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .auth-container {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+        }
+        .logo {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 24px;
+        }
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 16px;
+        }
+        #google-signin {
+            margin: 20px 0;
+            display: flex;
+            justify-content: center;
+        }
+        .loading {
+            display: none;
+            margin: 20px 0;
+            color: #667eea;
+        }
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .success-message {
+            color: #28a745;
+            margin-top: 20px;
+            display: none;
+        }
+        .error-message {
+            color: #dc3545;
+            margin-top: 20px;
+            display: none;
+            padding: 10px;
+            background: #f8d7da;
+            border-radius: 5px;
+            border: 1px solid #f5c6cb;
+        }
+        .business-form {
+            display: none;
+            text-align: left;
+            margin-top: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+            font-weight: 500;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+        input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.1);
+        }
+        .btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+            margin-top: 10px;
+        }
+        .btn:hover {
+            background: #5a67d8;
+        }
+        .skip-btn {
+            background: transparent;
+            color: #667eea;
+            border: 1px solid #667eea;
+            margin-top: 10px;
+        }
+        .skip-btn:hover {
+            background: #667eea;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="auth-container">
+        <div class="logo">🍳</div>
+        <h1>Welcome to Recipes App</h1>
+        <p class="subtitle">Sign in with Google to access your personalized recipe collection</p>
+        
+        <div id="sign-in-section">
+            <div id="google-signin"></div>
+            <p style="color: #999; font-size: 12px;">
+                Secure authentication powered by Google
+            </p>
+        </div>
+        
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p>Authenticating with Google...</p>
+        </div>
+        
+        <div class="success-message" id="success-message">
+            <p>✅ Authentication successful!</p>
+        </div>
+        
+        <div class="error-message" id="error-message"></div>
+        
+        <!-- Business Information Form (for new users) -->
+        <div class="business-form" id="business-form">
+            <h3 style="color: #333; margin-bottom: 20px;">Complete Your Business Profile</h3>
+            <form id="business-info-form">
+                <div class="form-group">
+                    <label for="businessName">Business Name *</label>
+                    <input type="text" id="businessName" required placeholder="Your restaurant name">
+                </div>
+                <div class="form-group">
+                    <label for="ownerName">Owner Name *</label>
+                    <input type="text" id="ownerName" required placeholder="Your full name">
+                </div>
+                <div class="form-group">
+                    <label for="businessNumber">Business License Number *</label>
+                    <input type="text" id="businessNumber" required placeholder="Business registration number">
+                </div>
+                <div class="form-group">
+                    <label for="address">Address *</label>
+                    <input type="text" id="address" required placeholder="Street address">
+                </div>
+                <div class="form-group">
+                    <label for="city">City *</label>
+                    <input type="text" id="city" required placeholder="City">
+                </div>
+                <div class="form-group">
+                    <label for="zip">Postal Code *</label>
+                    <input type="text" id="zip" required placeholder="Postal code">
+                </div>
+                <div class="form-group">
+                    <label for="phone">Phone Number *</label>
+                    <input type="tel" id="phone" required placeholder="Phone number">
+                </div>
+                <button type="submit" class="btn">Complete Profile & Continue</button>
+                <button type="button" class="btn skip-btn" onclick="skipBusinessProfile()">Skip for Now</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Configuration
+        const CONFIG = {
+            API_BASE: 'http://localhost:5000', // Change to your production URL
+            GOOGLE_CLIENT_ID: '725562539587-foe12tkg7qqqd2st01lv32ls4dr8k90j.apps.googleusercontent.com',
+            REDIRECT_URLS: {
+                // Define where to redirect after successful authentication
+                development: 'http://localhost:3000/dashboard', // Your frontend app
+                production: 'https://be-tan-theta.vercel.app/dashboard', // Your production app
+                fallback: '/dashboard' // Fallback relative URL
+            }
+        };
+
+        let currentUser = null;
+
+        // Get the appropriate redirect URL
+        function getRedirectUrl() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const redirectParam = urlParams.get('redirect');
+            
+            if (redirectParam) {
+                return decodeURIComponent(redirectParam);
+            }
+            
+            // Determine environment and return appropriate URL
+            if (window.location.hostname === 'localhost') {
+                return CONFIG.REDIRECT_URLS.development;
+            } else if (window.location.hostname.includes('vercel.app')) {
+                return CONFIG.REDIRECT_URLS.production;
+            } else {
+                return CONFIG.REDIRECT_URLS.fallback;
+            }
+        }
+
+        // Handle successful authentication
+        function handleAuthenticationSuccess(userData, redirectUrl) {
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('success-message').style.display = 'block';
+            
+            // Store user data in localStorage for the main app
+            localStorage.setItem('user', JSON.stringify(userData));
+            localStorage.setItem('isAuthenticated', 'true');
+            
+            // If user is new and hasn't completed business profile, show form
+            if (userData.status === 'new' && !userData.user.businessCompleted) {
+                setTimeout(() => {
+                    document.getElementById('success-message').style.display = 'none';
+                    document.getElementById('business-form').style.display = 'block';
+                    
+                    // Pre-fill owner name with Google name
+                    document.getElementById('ownerName').value = userData.user.name || '';
+                }, 1500);
+            } else {
+                // Redirect to main app after 2 seconds
+                setTimeout(() => {
+                    window.location.href = redirectUrl;
+                }, 2000);
+            }
+        }
+
+        // Handle Google Sign-In response
+        function handleCredentialResponse(response) {
+            const idToken = response.credential;
+            const redirectUrl = getRedirectUrl();
+            
+            // Show loading
+            document.getElementById('sign-in-section').style.display = 'none';
+            document.getElementById('loading').style.display = 'block';
+            
+            // Send to backend with redirect URL
+            fetch(`${CONFIG.API_BASE}/api/google/auth`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ 
+                    idToken,
+                    redirectUrl 
+                })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    currentUser = data.user;
+                    handleAuthenticationSuccess(data, redirectUrl);
+                } else {
+                    showError('Authentication failed: ' + data.message);
+                }
+            })
+            .catch(error => {
+                showError('Network error: ' + error.message);
+            });
+        }
+
+        // Handle business profile submission
+        document.getElementById('business-info-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const businessData = {
+                googleSub: currentUser.googleSub,
+                businessName: document.getElementById('businessName').value,
+                ownerName: document.getElementById('ownerName').value,
+                businessNumber: document.getElementById('businessNumber').value,
+                address: document.getElementById('address').value,
+                city: document.getElementById('city').value,
+                zip: document.getElementById('zip').value,
+                phone: document.getElementById('phone').value
+            };
+
+            // Show loading
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+            const originalText = submitBtn.textContent;
+            submitBtn.textContent = 'Saving...';
+            submitBtn.disabled = true;
+
+            fetch(`${CONFIG.API_BASE}/api/google/user/business`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(businessData)
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    // Update stored user data
+                    localStorage.setItem('user', JSON.stringify(data.user));
+                    
+                    // Show success and redirect
+                    document.getElementById('business-form').style.display = 'none';
+                    document.getElementById('success-message').innerHTML = '<p>✅ Profile completed successfully!</p>';
+                    document.getElementById('success-message').style.display = 'block';
+                    
+                    setTimeout(() => {
+                        window.location.href = getRedirectUrl();
+                    }, 2000);
+                } else {
+                    showError('Failed to save business information: ' + data.message);
+                    submitBtn.textContent = originalText;
+                    submitBtn.disabled = false;
+                }
+            })
+            .catch(error => {
+                showError('Network error: ' + error.message);
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+            });
+        });
+
+        // Skip business profile
+        function skipBusinessProfile() {
+            window.location.href = getRedirectUrl();
+        }
+
+        // Show error message
+        function showError(message) {
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('sign-in-section').style.display = 'block';
+            document.getElementById('error-message').textContent = message;
+            document.getElementById('error-message').style.display = 'block';
+        }
+
+        // Initialize Google Sign-In
+        window.onload = () => {
+            // Check if user is already authenticated
+            const isAuthenticated = localStorage.getItem('isAuthenticated');
+            if (isAuthenticated === 'true') {
+                // User is already logged in, redirect to main app
+                window.location.href = getRedirectUrl();
+                return;
+            }
+
+            google.accounts.id.initialize({
+                client_id: CONFIG.GOOGLE_CLIENT_ID,
+                callback: handleCredentialResponse,
+                auto_select: false,
+                cancel_on_tap_outside: false
+            });
+            
+            google.accounts.id.renderButton(
+                document.getElementById('google-signin'),
+                { 
+                    theme: "outline", 
+                    size: "large",
+                    text: "signin_with",
+                    width: 280,
+                    height: 44
+                }
+            );
+            
+            // Auto-show the One Tap dialog
+            google.accounts.id.prompt();
+        };
+    </script>
+</body>
+</html>
