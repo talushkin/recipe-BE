@@ -1,0 +1,11 @@
+id,company_id,timezone,language,email_notifications,sms_notifications,newsletter_subscription,bid_alerts,project_alerts,created_date
+1,1,Asia/Jerusalem,he,TRUE,FALSE,TRUE,TRUE,TRUE,2025-11-06 10:00:00
+2,2,Asia/Jerusalem,he,TRUE,TRUE,TRUE,TRUE,TRUE,2025-11-06 10:00:00
+3,3,Asia/Jerusalem,he,TRUE,FALSE,TRUE,TRUE,TRUE,2025-11-06 10:00:00
+4,4,Asia/Jerusalem,he,TRUE,TRUE,FALSE,TRUE,TRUE,2025-11-06 10:00:00
+5,5,Asia/Jerusalem,he,TRUE,FALSE,TRUE,TRUE,TRUE,2025-11-06 10:00:00
+6,6,Asia/Jerusalem,he,TRUE,TRUE,TRUE,TRUE,TRUE,2025-11-06 10:00:00
+7,7,Asia/Jerusalem,he,TRUE,FALSE,TRUE,TRUE,TRUE,2025-11-06 10:00:00
+8,8,Asia/Jerusalem,he,TRUE,FALSE,FALSE,TRUE,TRUE,2025-11-06 10:00:00
+9,9,Asia/Jerusalem,he,TRUE,FALSE,TRUE,TRUE,TRUE,2025-11-06 10:00:00
+10,10,Asia/Jerusalem,he,TRUE,TRUE,TRUE,TRUE,TRUE,2025-11-06 10:00:00

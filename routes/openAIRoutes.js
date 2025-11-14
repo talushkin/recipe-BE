@@ -10,7 +10,8 @@ const {
   getSongLyricsChords,
   getReactQuestion,
   extractReceiptDataFromImage,
-  uploadBufferToS3
+  uploadBufferToS3,
+  getSQLQuery
 } = require("../controllers/openAIController");
 
 const { 
@@ -125,6 +126,21 @@ router.post("/get-playlist-list", auth, async (req, res) => {
     }
     const playlists = await getPlaylistFromYouTube({ q });
     res.status(200).json(playlists);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: error.message || "Internal Server Error", details: error?.response?.data });
+  }
+});
+
+// Route for generating SQL query from natural language
+router.post("/get-sql-q", auth, async (req, res) => {
+  try {
+    const { q } = req.body;
+    if (!q) {
+      return res.status(400).json({ error: "Query (q) is required" });
+    }
+    const SQLQuery = await getSQLQuery({ q });
+    res.status(200).json(SQLQuery);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: error.message || "Internal Server Error", details: error?.response?.data });

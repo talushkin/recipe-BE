@@ -181,3 +181,21 @@ Content-Type: application/json
   "numberOfQuestions": 1,
   "numberOfPossibleAnswers": 4
 }
+
+### Get SQL query from natural language
+POST {{localUrl}}/api/ai/get-sql-q
+Authorization: Bearer 1234
+Content-Type: application/json
+
+{
+  "q": "Show me all companies with their names and cities"
+}
+
+### Get SQL query from Hebrew text
+POST {{localUrl}}/api/ai/get-sql-q
+Authorization: Bearer 1234
+Content-Type: application/json
+
+{
+  "q": "הראה לי את כל החברות עם השמות והערים שלהן"
+}

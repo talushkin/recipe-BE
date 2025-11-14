@@ -1,0 +1,6 @@
+id,company_id,session_data,ip_address,user_agent,created_date,expires_at
+sess_admin_123,1,"{""user_id"":1,""role"":""admin"",""last_activity"":""2025-11-06T14:30:00Z""}",127.0.0.1,Mozilla/5.0 (Windows NT 10.0; Win64; x64),2025-11-06 10:00:00,2025-11-07 10:00:00
+sess_david_456,2,"{""user_id"":2,""role"":""provider"",""last_activity"":""2025-11-06T14:25:00Z""}",192.168.1.100,Mozilla/5.0 (Windows NT 10.0; Win64; x64),2025-11-06 10:00:00,2025-11-06 22:00:00
+sess_sarah_789,3,"{""user_id"":3,""role"":""provider"",""last_activity"":""2025-11-06T14:20:00Z""}",192.168.1.101,Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7),2025-11-06 10:00:00,2025-11-06 18:00:00
+sess_mike_321,4,"{""user_id"":4,""role"":""provider"",""last_activity"":""2025-11-06T14:15:00Z""}",192.168.1.102,Mozilla/5.0 (X11; Linux x86_64),2025-11-06 10:00:00,2025-11-06 20:00:00
+sess_startup_654,8,"{""user_id"":8,""role"":""client"",""last_activity"":""2025-11-06T14:10:00Z""}",192.168.1.103,Mozilla/5.0 (Windows NT 10.0; Win64; x64),2025-11-06 10:00:00,2025-11-06 16:00:00

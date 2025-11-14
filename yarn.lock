@@ -2605,7 +2605,7 @@ functions-have-names@^1.2.3:
   resolved "https://registry.npmjs.org/functions-have-names/-/functions-have-names-1.2.3.tgz"
   integrity sha512-xckBUXyTIqT97tq2x2AMb+g163b5JFysYk0x4qxNFwbfQkmNZoiRHb6sPzI9/QV33WeuvVYBUIiD4NzNIyqaRQ==
 
-gaxios@^7.0.0:
+gaxios@^7.0.0, gaxios@^7.0.0-rc.4:
   version "7.1.2"
   resolved "https://registry.npmjs.org/gaxios/-/gaxios-7.1.2.tgz"
   integrity sha512-/Szrn8nr+2TsQT1Gp8iIe/BEytJmbyfrbFh419DfGQSkEgNEhbPi7JRJuughjkTzPWgU9gBQf5AVu3DbHt0OXA==
@@ -2728,7 +2728,7 @@ globalthis@^1.0.4:
     define-properties "^1.2.1"
     gopd "^1.0.1"
 
-google-auth-library@^10.4.0:
+google-auth-library@^10.1.0, google-auth-library@^10.2.0, google-auth-library@^10.4.0:
   version "10.4.0"
   resolved "https://registry.npmjs.org/google-auth-library/-/google-auth-library-10.4.0.tgz"
   integrity sha512-CmIrSy1bqMQUsPmA9+hcSbAXL80cFhu40cGMUjCaLpNKVzzvi+0uAHq8GNZxkoGYIsTX4ZQ7e4aInAqWxgn4fg==
@@ -2745,6 +2745,25 @@ google-logging-utils@^1.0.0:
   version "1.1.1"
   resolved "https://registry.npmjs.org/google-logging-utils/-/google-logging-utils-1.1.1.tgz"
   integrity sha512-rcX58I7nqpu4mbKztFeOAObbomBbHU2oIb/d3tJfF3dizGSApqtSwYJigGCooHdnMyQBIw8BrWyK96w3YXgr6A==
+
+googleapis-common@^8.0.0:
+  version "8.0.1"
+  resolved "https://registry.npmjs.org/googleapis-common/-/googleapis-common-8.0.1.tgz"
+  integrity sha512-eCzNACUXPb1PW5l0ULTzMHaL/ltPRADoPgjBlT8jWsTbxkCp6siv+qKJ/1ldaybCthGwsYFYallF7u9AkU4L+A==
+  dependencies:
+    extend "^3.0.2"
+    gaxios "^7.0.0-rc.4"
+    google-auth-library "^10.1.0"
+    qs "^6.7.0"
+    url-template "^2.0.8"
+
+googleapis@^166.0.0:
+  version "166.0.0"
+  resolved "https://registry.npmjs.org/googleapis/-/googleapis-166.0.0.tgz"
+  integrity sha512-Xz7yG+ihVvYMwSULKIMeTp6vDX95rrSbsaR3xUmgYjwQdAkchMQ5ndFeG5QZwcBOIyvJFvG7ZLIZE7mKW2X/hw==
+  dependencies:
+    google-auth-library "^10.2.0"
+    googleapis-common "^8.0.0"
 
 gopd@^1.0.1, gopd@^1.2.0:
   version "1.2.0"
@@ -4434,6 +4453,13 @@ qs@^6.14.0:
   dependencies:
     side-channel "^1.1.0"
 
+qs@^6.7.0, qs@6.13.0:
+  version "6.13.0"
+  resolved "https://registry.npmjs.org/qs/-/qs-6.13.0.tgz"
+  integrity sha512-+38qI9SOr8tfZ4QmJNplMUxqjbe7LKvvZgWdExBOmd+egZTtjLB67Gu0HRX3u/XOq7UU2Nx6nsjvS16Z9uwfpg==
+  dependencies:
+    side-channel "^1.0.6"
+
 qs@2.3.3:
   version "2.3.3"
   resolved "https://registry.npmjs.org/qs/-/qs-2.3.3.tgz"
@@ -4443,13 +4469,6 @@ qs@2.4.2:
   version "2.4.2"
   resolved "https://registry.npmjs.org/qs/-/qs-2.4.2.tgz"
   integrity sha512-Ur2glV49dt6jknphzkWeLUNCy7pmwGxGaEJuuxVVBioSwQzT00cZPLEtRqr4cg/iO/6N+RbfB0lFD2EovyeEng==
-
-qs@6.13.0:
-  version "6.13.0"
-  resolved "https://registry.npmjs.org/qs/-/qs-6.13.0.tgz"
-  integrity sha512-+38qI9SOr8tfZ4QmJNplMUxqjbe7LKvvZgWdExBOmd+egZTtjLB67Gu0HRX3u/XOq7UU2Nx6nsjvS16Z9uwfpg==
-  dependencies:
-    side-channel "^1.0.6"
 
 range-parser@~1.2.1:
   version "1.2.1"
@@ -5577,6 +5596,11 @@ url-parse-lax@^1.0.0:
   integrity sha512-BVA4lR5PIviy2PMseNd2jbFQ+jwSwQGdJejf5ctd1rEXt0Ypd7yanUK9+lYechVlN5VaTJGsu2U/3MDDu6KgBA==
   dependencies:
     prepend-http "^1.0.1"
+
+url-template@^2.0.8:
+  version "2.0.8"
+  resolved "https://registry.npmjs.org/url-template/-/url-template-2.0.8.tgz"
+  integrity sha512-XdVKMF4SJ0nP/O7XIPB0JwAEuT9lDIYnNsK8yGVe43y0AWoKeJNdv3ZNWh7ksJ6KqQFjOO6ox/VEitLnaVNufw==
 
 use@^3.1.0:
   version "3.1.1"

@@ -1,0 +1,11 @@
+id,email,username,password,first_name,last_name,company_name,description,website,phone,city,country,status,is_verified,rating,created_date
+1,admin@xplace.com,admin,$2a$10$N.zmdr9k7u,מנהל,מערכת,XPlace מנהל,חשבון מנהל של פלטפורמת XPlace,https://xplace.com,+972-50-555-0001,תל אביב,ישראל,1,TRUE,5.00,2025-11-06 10:00:00
+2,david@techsolutions.co.il,davidcohen,$2a$10$N.zmdr9k7u,דוד,כהן,פתרונות טכנולוגיה בע"מ,פיתוח פול-סטאק ופתרונות ענן,https://techsolutions.co.il,+972-50-555-0002,תל אביב,ישראל,1,TRUE,4.85,2025-11-06 10:00:00
+3,sarah@designstudio.co.il,sarahm,$2a$10$N.zmdr9k7u,שרה,מילר,סטודיו עיצוב יצירתי,עיצוב UI/UX מקצועי ושירותי מיתוג,https://designstudio.co.il,+972-50-555-0003,הרצליה,ישראל,1,TRUE,4.92,2025-11-06 10:00:00
+4,mike@mobileapps.co.il,mikechen,$2a$10$N.zmdr9k7u,מיכאל,חן,מובייל אפס פרו,פיתוח אפליקציות iOS ו-Android,https://mobileapps.co.il,+972-50-555-0004,רעננה,ישראל,1,TRUE,4.78,2025-11-06 10:00:00
+5,anna@datainsights.co.il,annawilson,$2a$10$N.zmdr9k7u,אנה,וילסון,תובנות נתונים בע"מ,ייעוץ בלמידת מכונה ואנליטיקת נתונים,https://datainsights.co.il,+972-50-555-0005,פתח תקווה,ישראל,1,TRUE,4.65,2025-11-06 10:00:00
+6,roi@marketingpro.co.il,roibrown,$2a$10$N.zmdr9k7u,רועי,חום,סוכנות מרקטינג פרו,שיווק דיגיטלי ושירותי קידום אתרים,https://marketingpro.co.il,+972-50-555-0006,נתניה,ישראל,1,TRUE,4.55,2025-11-06 10:00:00
+7,michal@contentwriters.co.il,michalkim,$2a$10$N.zmdr9k7u,מיכל,קים,כותבי תוכן בע"מ,כתיבת תוכן מקצועית וקופירייטינג,https://contentwriters.co.il,+972-50-555-0007,ירושלים,ישראל,1,TRUE,4.71,2025-11-06 10:00:00
+8,client1@startup.co.il,startup123,$2a$10$N.zmdr9k7u,איילת,דוד,סטארט-אפ חדשני,מחפשים שירותי פיתוח לפלטפורמה החדשה שלנו,https://innovatetech.co.il,+972-50-555-0008,חיפה,ישראל,1,FALSE,0.00,2025-11-06 10:00:00
+9,client2@retailbiz.co.il,retailowner,$2a$10$N.zmdr9k7u,רונן,טיילור,פתרונות עסקיים קמעונאיים,מחפשים פתרונות אי-קומרס ושיווק,https://retailbiz.co.il,+972-50-555-0009,באר שבע,ישראל,1,FALSE,0.00,2025-11-06 10:00:00
+10,freelancer@design.co.il,alexfreelancer,$2a$10$N.zmdr9k7u,אלכס,ג'ונסון,מעצב עצמאי,מעצב גרפי ואיור עצמאי,https://alexdesigns.co.il,+972-50-555-0010,אילת,ישראל,1,TRUE,4.33,2025-11-06 10:00:00

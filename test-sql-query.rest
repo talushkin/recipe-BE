@@ -1,0 +1,37 @@
+@localUrl = http://localhost:5000
+
+### Test SQL Query Generation - Simple query
+POST {{localUrl}}/api/ai/get-sql-q
+Authorization: Bearer 1234
+Content-Type: application/json
+
+{
+  "q": "Show me all companies with their names and cities"
+}
+
+### Test SQL Query Generation - Join query
+POST {{localUrl}}/api/ai/get-sql-q
+Authorization: Bearer 1234
+Content-Type: application/json
+
+{
+  "q": "Find all projects with their company names and budgets over 50000"
+}
+
+### Test SQL Query Generation - Complex query
+POST {{localUrl}}/api/ai/get-sql-q
+Authorization: Bearer 1234
+Content-Type: application/json
+
+{
+  "q": "Show companies that have submitted bids with their bid amounts and project titles"
+}
+
+### Test SQL Query Generation - Count query
+POST {{localUrl}}/api/ai/get-sql-q
+Authorization: Bearer 1234
+Content-Type: application/json
+
+{
+  "q": "Count how many projects each company has created"
+}

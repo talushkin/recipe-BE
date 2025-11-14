@@ -500,3 +500,96 @@ BE EXTREMELY CAREFUL with the amount - make sure you read ALL digits correctly.`
 };
 exports.extractReceiptDataFromImage = extractReceiptDataFromImage;
 
+// Function to generate SQL queries from natural language using AI
+exports.getSQLQuery = async ({ q }) => {
+  const fs = require("fs");
+  const path = require("path");
+  
+  try {
+    // Read all CSV files to understand table structure
+    const csvPath = path.join(__dirname, "xplaceTables", "google-sheets");
+    const csvFiles = [
+      "01_category.csv",
+      "02_company.csv", 
+      "03_project.csv",
+      "04_bid.csv",
+      "05_message.csv",
+      "06_company_prefs.csv",
+      "07_user_session.csv"
+    ];
+
+    let tableSchemas = "";
+    
+    // Read each CSV file and extract headers for schema
+    for (const csvFile of csvFiles) {
+      try {
+        const filePath = path.join(csvPath, csvFile);
+        const csvContent = fs.readFileSync(filePath, "utf8");
+        const lines = csvContent.split("\n");
+        const headers = lines[0].split(",");
+        const tableName = csvFile.replace(/^\d+_/, "").replace(".csv", "");
+        
+        tableSchemas += `Table: ${tableName}\nColumns: ${headers.join(", ")}\n\n`;
+      } catch (fileError) {
+        console.warn(`Could not read ${csvFile}:`, fileError.message);
+      }
+    }
+
+    // Create AI prompt with table schemas
+    const prompt = `You are an expert SQL query generator. Based on the following database schema, generate a SQL query to answer the user's question.
+
+Database Schema:
+${tableSchemas}
+
+User Question: "${q}"
+
+Rules:
+1. Generate only the SQL query, no explanation
+2. Use proper SQL syntax
+3. Use table and column names exactly as provided
+4. If the question cannot be answered with the available tables, return "Cannot generate query: insufficient table information"
+5. For joins, use appropriate foreign key relationships (e.g., company_id references company table)
+6. Return only the SQL query without any markdown formatting or code blocks
+
+SQL Query:`;
+
+    const response = await axios.post(
+      `${OPENAI_API_URL}/chat/completions`,
+      {
+        model: "gpt-4o-mini",
+        store: true,
+        messages: [{ role: "user", content: prompt }],
+        temperature: 0.1,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${OPENAI_API_KEY}`,
+        },
+      }
+    );
+
+    const sqlQuery = response.data.choices[0]?.message?.content?.trim();
+    if (!sqlQuery) {
+      throw new Error("No SQL query returned from AI");
+    }
+
+    return {
+      query: q,
+      sqlQuery: sqlQuery,
+      tableSchemas: tableSchemas
+    };
+
+  } catch (error) {
+    const errorDetails = error?.response?.data || error.message || error;
+    console.error("Error generating SQL query:", errorDetails);
+    throw { message: "Failed to generate SQL query", details: errorDetails };
+  }
+};
+
+// Stub for GET /api/ai/pic2hesh
+exports.pic2hesh = async () => {
+  // Replace with actual logic as needed
+  return { message: "pic2hesh endpoint response" };
+};
+

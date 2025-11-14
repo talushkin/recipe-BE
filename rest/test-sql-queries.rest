@@ -1,0 +1,46 @@
+@localUrl = http://localhost:5000
+
+### 1) כל החברות עם שמות וערים
+POST {{localUrl}}/api/ai/get-sql-q
+Authorization: Bearer 1234
+Content-Type: application/json
+
+{
+  "q": "הראה לי את כל החברות עם השמות והערים שלהן"
+}
+
+### 2) פרויקטים עם שמות חברות ותקציבים מעל 50000
+POST {{localUrl}}/api/ai/get-sql-q
+Authorization: Bearer 1234
+Content-Type: application/json
+
+{
+  "q": "מצא את כל הפרויקטים עם שמות החברות ותקציבים גדולים מ-50000"
+}
+
+### 3) חברות שהגישו הצעות מחיר עם סכומים וכותרות פרויקטים
+POST {{localUrl}}/api/ai/get-sql-q
+Authorization: Bearer 1234
+Content-Type: application/json
+
+{
+  "q": "הראה חברות שהגישו הצעות מחיר עם סכומי ההצעות וכותרות הפרויקטים"
+}
+
+### 4) ספירת פרויקטים לכל חברה
+POST {{localUrl}}/api/ai/get-sql-q
+Authorization: Bearer 1234
+Content-Type: application/json
+
+{
+  "q": "ספור כמה פרויקטים כל חברה יצרה; החזר מזהה חברה וספירת פרויקטים"
+}
+
+### 5) הודעות לפרויקט מספר 1 עם שם החברה השולחת
+POST {{localUrl}}/api/ai/get-sql-q
+Authorization: Bearer 1234
+Content-Type: application/json
+
+{
+  "q": "רשום הודעות לפרויקט מספר 1 כולל נושא, תוכן ושם החברה השולחת"
+}
