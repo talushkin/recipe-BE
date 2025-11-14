@@ -65,6 +65,67 @@ paths:
       responses:
         '200':
           description: Recipe filled
+  /api/ai/get-sql-q:
+    post:
+      summary: Generate SQL query from natural language
+      description: Convert natural language questions (in English or Hebrew) to SQL queries based on XPlace database schema
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - q
+              properties:
+                q:
+                  type: string
+                  description: Natural language query in English or Hebrew
+                  example: "Show me all companies with their names and cities"
+      responses:
+        '200':
+          description: SQL query generated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  query:
+                    type: string
+                    description: Original natural language query
+                    example: "Show me all companies with their names and cities"
+                  sqlQuery:
+                    type: string
+                    description: Generated SQL query
+                    example: "SELECT company_name, city FROM company;"
+                  tableSchemas:
+                    type: string
+                    description: Available database table schemas
+                    example: "Table: category\nColumns: id, name, description, parent_id, status, created_date\n\nTable: company\nColumns: id, email, username, password, first_name, last_name, company_name, description, website, phone, city, country, status, is_verified, rating, created_date"
+        '400':
+          description: Bad request - missing query parameter
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Query (q) is required"
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Failed to generate SQL query"
+                  details:
+                    type: object
 components:
   securitySchemes:
     bearerAuth:
