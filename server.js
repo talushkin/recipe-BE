@@ -13,6 +13,8 @@ const youTubeRoutes = require("./routes/youTubeRoutes");
 const googleAuthRoutes = require("./routes/googleAuthRoutes");
 const logger = require("./middlewares/logger"); // 👈 מוסיפים את ה-logger
 
+const whatsappSqlRoutes = require("./routes/whatsappSql");
+
 const app = express();
 const PORT = process.env.PORT || 5000;
 const connectionString = process.env.MONGODB_CONNECTION_STRING || "mongodb://localhost:27017/recipes";
@@ -24,6 +26,9 @@ app.use(logger); // 👈 מוסיפים אותו לפני הרואטרים
 
 // Mount AI routes after body parser
 app.use("/api/ai", openAIRoutes);
+
+// WhatsApp SQL AI assistant webhook
+app.use("/api", whatsappSqlRoutes);
 
 mongoose.connect(connectionString, {
     useNewUrlParser: true,
