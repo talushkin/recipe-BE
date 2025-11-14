@@ -113,3 +113,63 @@ Authorization: Bearer pic2hesh-TAL
 
 # boundingBoxes values are relative to image size (percent, 0-1)
 # Use in heshbit app for field location overlay
+
+### Get SQL query from English text (live)
+POST {{baseUrl}}/api/ai/get-sql-q
+Authorization: Bearer 1234
+Content-Type: application/json
+
+{
+  "q": "Show me all companies with their names and cities"
+}
+
+### Get SQL query from Hebrew text - כל החברות (live)
+POST {{baseUrl}}/api/ai/get-sql-q
+Authorization: Bearer 1234
+Content-Type: application/json
+
+{
+  "q": "הראה לי את כל החברות עם השמות והערים שלהן"
+}
+
+### Get SQL query from Hebrew text - פרויקטים עם תקציבים גבוהים (live)
+POST {{baseUrl}}/api/ai/get-sql-q
+Authorization: Bearer 1234
+Content-Type: application/json
+
+{
+  "q": "מצא את כל הפרויקטים עם תקציבים גדולים מ-50000"
+}
+
+### Get SQL query from Hebrew text - הצעות מחיר (live)
+POST {{baseUrl}}/api/ai/get-sql-q
+Authorization: Bearer 1234
+Content-Type: application/json
+
+{
+  "q": "הראה חברות שהגישו הצעות מחיר עם סכומי ההצעות וכותרות הפרויקטים"
+}
+
+### Get SQL query from Hebrew text - ספירת פרויקטים (live)
+POST {{baseUrl}}/api/ai/get-sql-q
+Authorization: Bearer 1234
+Content-Type: application/json
+
+{
+  "q": "ספור כמה פרויקטים כל חברה יצרה"
+}
+
+### Get SQL query with custom CSV data (live)
+POST {{baseUrl}}/api/ai/get-sql-q
+Authorization: Bearer 1234
+Content-Type: application/json
+
+{
+    "q": "EVENTS in SAT",
+    "csv": [
+        {
+            "name": "events - events.csv",
+            "content": "Row ID,LOCATION,LAT,LNG,DAY,HOUR,GENRE,NAME,EVENT,DURATION,EMAIL,PHONE,IMAGE,VIDEO,LINK\r\noce1c5S4Fq4ZevZ-maHUIe,הדגניות 43,32.7206538,35.1248909,חמישי,22:30,פרפורמנס,טל ארנון,שרים על המקום,90,ipadtal@gmail.com,\"542,804,003\",,,\r\nB77uC994C9b4GjTXFvzS9j,פיש 13,32.705537,35.121476,שבת,20:30,מוזיקה,טל,חזרה,,telem.yael@gmail.com,,,,"
+        }
+    ]
+}

@@ -135,11 +135,11 @@ router.post("/get-playlist-list", auth, async (req, res) => {
 // Route for generating SQL query from natural language
 router.post("/get-sql-q", auth, async (req, res) => {
   try {
-    const { q } = req.body;
+    const { q, csv } = req.body;
     if (!q) {
       return res.status(400).json({ error: "Query (q) is required" });
     }
-    const SQLQuery = await getSQLQuery({ q });
+    const SQLQuery = await getSQLQuery({ q, csv });
     res.status(200).json(SQLQuery);
   } catch (error) {
     console.error(error);

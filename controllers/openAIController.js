@@ -501,37 +501,65 @@ BE EXTREMELY CAREFUL with the amount - make sure you read ALL digits correctly.`
 exports.extractReceiptDataFromImage = extractReceiptDataFromImage;
 
 // Function to generate SQL queries from natural language using AI
-exports.getSQLQuery = async ({ q }) => {
+exports.getSQLQuery = async ({ q, csv = null }) => {
   const fs = require("fs");
   const path = require("path");
   
   try {
-    // Read all CSV files to understand table structure
-    const csvPath = path.join(__dirname, "xplaceTables", "google-sheets");
-    const csvFiles = [
-      "01_category.csv",
-      "02_company.csv", 
-      "03_project.csv",
-      "04_bid.csv",
-      "05_message.csv",
-      "06_company_prefs.csv",
-      "07_user_session.csv"
-    ];
-
     let tableSchemas = "";
     
-    // Read each CSV file and extract headers for schema
-    for (const csvFile of csvFiles) {
-      try {
-        const filePath = path.join(csvPath, csvFile);
-        const csvContent = fs.readFileSync(filePath, "utf8");
-        const lines = csvContent.split("\n");
-        const headers = lines[0].split(",");
-        const tableName = csvFile.replace(/^\d+_/, "").replace(".csv", "");
-        
-        tableSchemas += `Table: ${tableName}\nColumns: ${headers.join(", ")}\n\n`;
-      } catch (fileError) {
-        console.warn(`Could not read ${csvFile}:`, fileError.message);
+    if (csv && Array.isArray(csv) && csv.length > 0) {
+      // Use custom CSV data provided in the request
+      for (const csvData of csv) {
+        try {
+          if (csvData.name && csvData.content) {
+            const lines = csvData.content.split("\n");
+            const headers = lines[0].split(",");
+            const tableName = csvData.name.replace(/\.csv$/i, "");
+            
+            tableSchemas += `Table: ${tableName}\nColumns: ${headers.join(", ")}\n`;
+            
+            // Include sample data if available (first few rows)
+            if (lines.length > 1) {
+              tableSchemas += `Sample data (first 3 rows):\n`;
+              for (let i = 1; i <= Math.min(3, lines.length - 1); i++) {
+                if (lines[i].trim()) {
+                  tableSchemas += `${lines[i]}\n`;
+                }
+              }
+            }
+            tableSchemas += "\n";
+          }
+        } catch (csvError) {
+          console.warn(`Could not process CSV data for ${csvData.name}:`, csvError.message);
+        }
+      }
+    } else {
+      // Use default xplaceTables/csv files
+      const csvPath = path.join(__dirname, "xplaceTables", "csv");
+      const csvFiles = [
+        "01_category.csv",
+        "02_company.csv", 
+        "03_project.csv",
+        "04_bid.csv",
+        "05_message.csv",
+        "06_company_prefs.csv",
+        "07_user_session.csv"
+      ];
+      
+      // Read each CSV file and extract headers for schema
+      for (const csvFile of csvFiles) {
+        try {
+          const filePath = path.join(csvPath, csvFile);
+          const csvContent = fs.readFileSync(filePath, "utf8");
+          const lines = csvContent.split("\n");
+          const headers = lines[0].split(",");
+          const tableName = csvFile.replace(/^\d+_/, "").replace(".csv", "");
+          
+          tableSchemas += `Table: ${tableName}\nColumns: ${headers.join(", ")}\n\n`;
+        } catch (fileError) {
+          console.warn(`Could not read ${csvFile}:`, fileError.message);
+        }
       }
     }
 

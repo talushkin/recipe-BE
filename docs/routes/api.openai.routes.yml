@@ -84,6 +84,20 @@ paths:
                   type: string
                   description: Natural language query in English or Hebrew
                   example: "Show me all companies with their names and cities"
+                csv:
+                  type: array
+                  description: Optional array of custom CSV data objects. If not provided, uses default xplaceTables
+                  items:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                        description: Name of the CSV table
+                        example: "customers.csv"
+                      content:
+                        type: string
+                        description: CSV content with headers and data rows
+                        example: "id,name,email\n1,John Doe,john@example.com\n2,Jane Smith,jane@example.com"
       responses:
         '200':
           description: SQL query generated successfully
