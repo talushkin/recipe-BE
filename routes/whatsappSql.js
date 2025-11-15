@@ -26,7 +26,11 @@ router.post('/whatsapp-sql', async (req, res) => {
       to: from,
       body: reply
     });
-    res.status(200).send('OK');
+    res.status(200).json({
+      query: body,
+      sqlQuery: result.sqlQuery,
+      tableSchemas: result.tableSchemas
+    });
   } catch (err) {
     await client.messages.create({
       from: whatsappFrom,
