@@ -12,6 +12,7 @@ const client = twilio(accountSid, authToken);
 
 // Webhook endpoint for Twilio WhatsApp
 router.post('/whatsapp-sql', async (req, res) => {
+  console.log('BODY:', req.body);
   const from = req.body.From;
   const body = req.body.Body;
   if (!body) return res.status(400).send('No message body');

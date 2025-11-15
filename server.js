@@ -22,6 +22,7 @@ const connectionString = process.env.MONGODB_CONNECTION_STRING || "mongodb://loc
 app.use(cors());
 // Add body parser middleware first
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(logger); // 👈 מוסיפים אותו לפני הרואטרים
 
 // Mount AI routes after body parser

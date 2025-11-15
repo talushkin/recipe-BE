@@ -199,3 +199,11 @@ Content-Type: application/json
 {
   "q": "הראה לי את כל החברות עם השמות והערים שלהן"
 }
+
+### WhatsApp SQL AI assistant (local)
+### WhatsApp SQL AI assistant (local)
+POST {{localUrl}}/api/whatsapp-sql
+Content-Type: application/x-www-form-urlencoded
+
+From=whatsapp:+972542804003
+Body=events names

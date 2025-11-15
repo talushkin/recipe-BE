@@ -50,6 +50,35 @@ paths:
       security:
         - bearerAuth: []
       requestBody:
+        /whatsapp-sql:
+          post:
+            summary: WhatsApp SQL AI Webhook
+            description: Webhook endpoint for Twilio WhatsApp integration. Receives WhatsApp messages and replies with an AI-generated SQL query.
+            requestBody:
+              required: true
+              content:
+                application/x-www-form-urlencoded:
+                  schema:
+                    type: object
+                    required:
+                      - From
+                      - Body
+                    properties:
+                      From:
+                        type: string
+                        description: WhatsApp sender (e.g. 'whatsapp:+1234567890')
+                        example: 'whatsapp:+1234567890'
+                      Body:
+                        type: string
+                        description: Natural language SQL question
+                        example: "כתוב לי שאילתת SQL שמחזירה את כל המשתמשים"
+            responses:
+              '200':
+                description: Message sent successfully
+              '400':
+                description: No message body
+              '500':
+                description: Internal server error
         required: true
         content:
           application/json:
