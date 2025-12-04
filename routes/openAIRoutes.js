@@ -341,7 +341,8 @@ router.post("/project-ai", auth, async (req, res) => {
       jobType, 
       yearsExp, 
       mustSkills, 
-      niceSkills 
+      niceSkills,
+      charCountLimits
     } = req.body;
     
     if (!freeText || !jobRole) {
@@ -356,7 +357,8 @@ router.post("/project-ai", auth, async (req, res) => {
       jobType, 
       yearsExp, 
       mustSkills, 
-      niceSkills 
+      niceSkills,
+      charCountLimits
     });
     
     res.status(200).json(result);

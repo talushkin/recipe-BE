@@ -194,6 +194,29 @@ Content-Type: application/json
 
 ###
 
+### Project AI - With Custom Character Limits (Live)
+POST {{baseUrl}}/api/ai/project-ai
+Authorization: Bearer 1234
+Content-Type: application/json
+
+{
+  "lang": "עברית",
+  "writingStyle": "Professional",
+  "freeText": "הצטרף/י לחברה מובילה",
+  "jobRole": "Full Stack Developer",
+  "jobType": "משרה מלאה",
+  "yearsExp": "2-3",
+  "mustSkills": "React, Node.js, MongoDB",
+  "niceSkills": "TypeScript, AWS",
+  "charCountLimits": {
+    "title": 100,
+    "description": 200,
+    "requirements": 180
+  }
+}
+
+###
+
 ### Project AI - Frontend Developer (Hebrew, Live)
 POST {{baseUrl}}/api/ai/project-ai
 Authorization: Bearer 1234

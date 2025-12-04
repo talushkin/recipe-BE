@@ -630,12 +630,18 @@ exports.getProjectAI = async ({
   jobType, 
   yearsExp, 
   mustSkills, 
-  niceSkills 
+  niceSkills,
+  charCountLimits = {} 
 }) => {
   try {
     if (!freeText || !jobRole) {
       throw new Error("freeText and jobRole are required");
     }
+
+    // Set default character limits if not provided
+    const titleLimit = charCountLimits.title || 200;
+    const descriptionLimit = charCountLimits.description || 300;
+    const requirementsLimit = charCountLimits.requirements || 300;
 
     const MODEL = process.env.MODEL || "gpt-4o-mini";
 
@@ -647,7 +653,10 @@ The job post must be clear, concise, and appealing to the type of candidate you 
 It must include job benefits and use three text fields only: title, description, requirements.
 
 IMPORTANT - SUPREME RULE:
-Each field (title, description, requirements) MUST be at most 300 letters in the chosen language (${lang}). Do not exceed 300 letters for any single field.
+- Title MUST be at most ${titleLimit} characters in the chosen language (${lang}).
+- Description MUST be at most ${descriptionLimit} characters in the chosen language (${lang}).
+- Requirements MUST be at most ${requirementsLimit} characters in the chosen language (${lang}).
+Do not exceed these character limits for any field.
 
 The job post output MUST follow exactly this structure:
 
@@ -674,9 +683,9 @@ KEY RULES (condensed, follow exactly):
 - After דרוש/ה must appear the job role, then the job scope.
 - developer = מפתח/ת.
 - If the job language is ${lang}, description and requirements must be in ${lang}.
-- Title must start with ||| and be up to 200 characters.
-- Description must start with %%% and be max 300 letters (supreme rule overrides other length rules).
-- Requirements must start with &&& and end with ^^^ and be max 300 letters.
+- Title must start with ||| and be up to ${titleLimit} characters.
+- Description must start with %%% and be max ${descriptionLimit} characters.
+- Requirements must start with &&& and end with ^^^ and be max ${requirementsLimit} characters.
 - Use only round bullets (•) in requirements.
 - Do not write "המשרה דורשת", "דרושה למשרה", "דרוש למשרה".
 - Job type must be written only in the requirements section, not in the title.
@@ -763,6 +772,11 @@ Make sure the generated text strictly respects the 300-letters-per-field supreme
       yearsExp,
       mustSkills,
       niceSkills,
+      charCountLimits: {
+        title: titleLimit,
+        description: descriptionLimit,
+        requirements: requirementsLimit
+      },
       output: outputText,
       charCount,
       wordCount,

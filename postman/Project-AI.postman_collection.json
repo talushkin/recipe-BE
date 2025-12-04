@@ -1,0 +1,413 @@
+{
+	"info": {
+		"_postman_id": "project-ai-collection-001",
+		"name": "Project AI - Job Post Generator",
+		"description": "API endpoints for generating professional job posts using AI with specific formatting rules and character limits",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Local",
+			"item": [
+				{
+					"name": "Project AI - Firmware Developer (Hebrew)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer 1234",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"lang\": \"עברית\",\n  \"writingStyle\": \"Subtle marketing\",\n  \"freeText\": \"עובד/ת זמני/ת לפרויקט פיתוח חכם\",\n  \"jobRole\": \"מפתח/ת תוכנה - פיתוח קושחה\",\n  \"jobType\": \"משרה מלאה\",\n  \"yearsExp\": \"1-2\",\n  \"mustSkills\": \"C, C++, embedded systems, RTOS\",\n  \"niceSkills\": \"Bluetooth, CAN, OTA updates\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/ai/project-ai",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"ai",
+								"project-ai"
+							]
+						},
+						"description": "Generate a Hebrew job post for a firmware developer position with 1-2 years experience"
+					},
+					"response": []
+				},
+				{
+					"name": "Project AI - Frontend Developer (Hebrew)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer 1234",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"lang\": \"עברית\",\n  \"writingStyle\": \"Friendly and encouraging\",\n  \"freeText\": \"הצטרף/י לצוות הפיתוח שלנו\",\n  \"jobRole\": \"מפתח/ת Frontend\",\n  \"jobType\": \"משרה מלאה\",\n  \"yearsExp\": \"0\",\n  \"mustSkills\": \"React, JavaScript, HTML, CSS\",\n  \"niceSkills\": \"TypeScript, Next.js, Redux\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/ai/project-ai",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"ai",
+								"project-ai"
+							]
+						},
+						"description": "Generate a Hebrew job post for an entry-level Frontend developer position"
+					},
+					"response": []
+				},
+				{
+					"name": "Project AI - Backend Developer (Hebrew)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer 1234",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"lang\": \"עברית\",\n  \"writingStyle\": \"Professional\",\n  \"freeText\": \"הזדמנות ייחודית לעבוד עם טכנולוגיות מתקדמות\",\n  \"jobRole\": \"Backend Developer\",\n  \"jobType\": \"משרה מלאה\",\n  \"yearsExp\": \"2-3\",\n  \"mustSkills\": \"Node.js, MongoDB, Express, REST APIs\",\n  \"niceSkills\": \"Docker, Redis, Microservices, AWS\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/ai/project-ai",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"ai",
+								"project-ai"
+							]
+						},
+						"description": "Generate a Hebrew job post for a Backend developer position with 2-3 years experience"
+					},
+					"response": []
+				},
+				{
+					"name": "Project AI - VP Engineering (Hebrew)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer 1234",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"lang\": \"עברית\",\n  \"writingStyle\": \"Professional\",\n  \"freeText\": \"דרוש/ה מנהל/ת פיתוח מנוסה\",\n  \"jobRole\": \"VP Engineering\",\n  \"jobType\": \"משרה מלאה\",\n  \"yearsExp\": \"3+\",\n  \"mustSkills\": \"Team management, Architecture, Node.js, React\",\n  \"niceSkills\": \"AWS, Kubernetes, Microservices\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/ai/project-ai",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"ai",
+								"project-ai"
+							]
+						},
+						"description": "Generate a Hebrew job post for a VP Engineering position"
+					},
+					"response": []
+				},
+				{
+					"name": "Project AI - Software Developer (English)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer 1234",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"lang\": \"English\",\n  \"writingStyle\": \"Professional\",\n  \"freeText\": \"Temporary position for smart development project\",\n  \"jobRole\": \"Software Developer - Firmware Development\",\n  \"jobType\": \"Full time\",\n  \"yearsExp\": \"1-2\",\n  \"mustSkills\": \"C, C++, embedded systems, RTOS\",\n  \"niceSkills\": \"Bluetooth, CAN, OTA updates\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/ai/project-ai",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"ai",
+								"project-ai"
+							]
+						},
+						"description": "Generate an English job post for a Software Developer position"
+					},
+					"response": []
+				},
+				{
+					"name": "Project AI - With Custom Character Limits",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer 1234",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"lang\": \"עברית\",\n  \"writingStyle\": \"Professional\",\n  \"freeText\": \"הצטרף/י לחברה מובילה\",\n  \"jobRole\": \"Full Stack Developer\",\n  \"jobType\": \"משרה מלאה\",\n  \"yearsExp\": \"2-3\",\n  \"mustSkills\": \"React, Node.js, MongoDB\",\n  \"niceSkills\": \"TypeScript, AWS\",\n  \"charCountLimits\": {\n    \"title\": 150,\n    \"description\": 250,\n    \"requirements\": 200\n  }\n}"
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/ai/project-ai",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"ai",
+								"project-ai"
+							]
+						},
+						"description": "Generate a job post with custom character limits for each section (title: 150, description: 250, requirements: 200)"
+					},
+					"response": []
+				}
+			],
+			"description": "Local development endpoints running on localhost:5000"
+		},
+		{
+			"name": "Production",
+			"item": [
+				{
+					"name": "Project AI - Firmware Developer (Hebrew, Live)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer 1234",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"lang\": \"עברית\",\n  \"writingStyle\": \"Subtle marketing\",\n  \"freeText\": \"עובד/ת זמני/ת לפרויקט פיתוח חכם\",\n  \"jobRole\": \"מפתח/ת תוכנה - פיתוח קושחה\",\n  \"jobType\": \"משרה מלאה\",\n  \"yearsExp\": \"1-2\",\n  \"mustSkills\": \"C, C++, embedded systems, RTOS\",\n  \"niceSkills\": \"Bluetooth, CAN, OTA updates\"\n}"
+						},
+						"url": {
+							"raw": "https://be-tan-theta.vercel.app/api/ai/project-ai",
+							"protocol": "https",
+							"host": [
+								"be-tan-theta",
+								"vercel",
+								"app"
+							],
+							"path": [
+								"api",
+								"ai",
+								"project-ai"
+							]
+						},
+						"description": "Generate a Hebrew job post for a firmware developer position (Production)"
+					},
+					"response": []
+				},
+				{
+					"name": "Project AI - Frontend Developer (Hebrew, Live)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer 1234",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"lang\": \"עברית\",\n  \"writingStyle\": \"Friendly and encouraging\",\n  \"freeText\": \"הצטרף/י לצוות הפיתוח שלנו\",\n  \"jobRole\": \"מפתח/ת Frontend\",\n  \"jobType\": \"משרה מלאה\",\n  \"yearsExp\": \"0\",\n  \"mustSkills\": \"React, JavaScript, HTML, CSS\",\n  \"niceSkills\": \"TypeScript, Next.js, Redux\"\n}"
+						},
+						"url": {
+							"raw": "https://be-tan-theta.vercel.app/api/ai/project-ai",
+							"protocol": "https",
+							"host": [
+								"be-tan-theta",
+								"vercel",
+								"app"
+							],
+							"path": [
+								"api",
+								"ai",
+								"project-ai"
+							]
+						},
+						"description": "Generate a Hebrew job post for an entry-level Frontend developer (Production)"
+					},
+					"response": []
+				},
+				{
+					"name": "Project AI - Backend Developer (Hebrew, Live)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer 1234",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"lang\": \"עברית\",\n  \"writingStyle\": \"Professional\",\n  \"freeText\": \"הזדמנות ייחודית לעבוד עם טכנולוגיות מתקדמות\",\n  \"jobRole\": \"Backend Developer\",\n  \"jobType\": \"משרה מלאה\",\n  \"yearsExp\": \"2-3\",\n  \"mustSkills\": \"Node.js, MongoDB, Express, REST APIs\",\n  \"niceSkills\": \"Docker, Redis, Microservices, AWS\"\n}"
+						},
+						"url": {
+							"raw": "https://be-tan-theta.vercel.app/api/ai/project-ai",
+							"protocol": "https",
+							"host": [
+								"be-tan-theta",
+								"vercel",
+								"app"
+							],
+							"path": [
+								"api",
+								"ai",
+								"project-ai"
+							]
+						},
+						"description": "Generate a Hebrew job post for a Backend developer (Production)"
+					},
+					"response": []
+				},
+				{
+					"name": "Project AI - With Custom Character Limits (Live)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer 1234",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"lang\": \"עברית\",\n  \"writingStyle\": \"Professional\",\n  \"freeText\": \"הצטרף/י לחברה מובילה\",\n  \"jobRole\": \"Full Stack Developer\",\n  \"jobType\": \"משרה מלאה\",\n  \"yearsExp\": \"2-3\",\n  \"mustSkills\": \"React, Node.js, MongoDB\",\n  \"niceSkills\": \"TypeScript, AWS\",\n  \"charCountLimits\": {\n    \"title\": 100,\n    \"description\": 200,\n    \"requirements\": 180\n  }\n}"
+						},
+						"url": {
+							"raw": "https://be-tan-theta.vercel.app/api/ai/project-ai",
+							"protocol": "https",
+							"host": [
+								"be-tan-theta",
+								"vercel",
+								"app"
+							],
+							"path": [
+								"api",
+								"ai",
+								"project-ai"
+							]
+						},
+						"description": "Generate a job post with custom character limits (Production) - title: 100, description: 200, requirements: 180"
+					},
+					"response": []
+				}
+			],
+			"description": "Production endpoints on Vercel (be-tan-theta.vercel.app)"
+		}
+	],
+	"variable": [
+		{
+			"key": "localUrl",
+			"value": "http://localhost:5000",
+			"type": "string"
+		},
+		{
+			"key": "productionUrl",
+			"value": "https://be-tan-theta.vercel.app",
+			"type": "string"
+		},
+		{
+			"key": "authToken",
+			"value": "1234",
+			"type": "string"
+		}
+	]
+}
