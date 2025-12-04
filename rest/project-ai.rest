@@ -1,0 +1,89 @@
+### Project AI - Generate Job Post (Hebrew)
+POST http://localhost:5000/api/ai/project-ai
+Content-Type: application/json
+Authorization: Bearer 1234
+
+{
+  "lang": "עברית",
+  "writingStyle": "Subtle marketing",
+  "freeText": "עובד/ת זמני/ת לפרויקט פיתוח חכם",
+  "jobRole": "מפתח/ת תוכנה - פיתוח קושחה",
+  "jobType": "משרה מלאה",
+  "yearsExp": "1-2",
+  "mustSkills": "C, C++, embedded systems, RTOS",
+  "niceSkills": "Bluetooth, CAN, OTA updates"
+}
+
+###
+
+### Project AI - Generate Job Post (English)
+POST http://localhost:5000/api/ai/project-ai
+Content-Type: application/json
+Authorization: Bearer 1234
+
+{
+  "lang": "English",
+  "writingStyle": "Professional",
+  "freeText": "Temporary position for smart development project",
+  "jobRole": "Software Developer - Firmware Development",
+  "jobType": "Full time",
+  "yearsExp": "1-2",
+  "mustSkills": "C, C++, embedded systems, RTOS",
+  "niceSkills": "Bluetooth, CAN, OTA updates"
+}
+
+###
+
+### Project AI - Entry Level Position
+POST http://localhost:5000/api/ai/project-ai
+Content-Type: application/json
+Authorization: Bearer 1234
+
+{
+  "lang": "עברית",
+  "writingStyle": "Friendly and encouraging",
+  "freeText": "הצטרף/י לצוות הפיתוח שלנו",
+  "jobRole": "מפתח/ת Frontend",
+  "jobType": "משרה מלאה",
+  "yearsExp": "0",
+  "mustSkills": "React, JavaScript, HTML, CSS",
+  "niceSkills": "TypeScript, Next.js, Redux"
+}
+
+###
+
+### Project AI - Senior Position
+POST http://localhost:5000/api/ai/project-ai
+Content-Type: application/json
+Authorization: Bearer 1234
+
+{
+  "lang": "עברית",
+  "writingStyle": "Professional",
+  "freeText": "דרוש/ה מנהל/ת פיתוח מנוסה",
+  "jobRole": "VP Engineering",
+  "jobType": "משרה מלאה",
+  "yearsExp": "3+",
+  "mustSkills": "Team management, Architecture, Node.js, React",
+  "niceSkills": "AWS, Kubernetes, Microservices"
+}
+
+###
+
+### Project AI - Backend Developer (Production)
+POST https://your-production-url.com/api/openai/project-ai
+Content-Type: application/json
+Authorization: Bearer YOUR_PRODUCTION_TOKEN
+
+{
+  "lang": "עברית",
+  "writingStyle": "Subtle marketing",
+  "freeText": "הזדמנות ייחודית לעבוד עם טכנולוגיות מתקדמות",
+  "jobRole": "Backend Developer",
+  "jobType": "משרה מלאה",
+  "yearsExp": "2-3",
+  "mustSkills": "Node.js, MongoDB, Express, REST APIs",
+  "niceSkills": "Docker, Redis, Microservices, AWS"
+}
+
+###

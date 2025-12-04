@@ -173,3 +173,57 @@ Content-Type: application/json
         }
     ]
 }
+
+###
+
+### Project AI - Generate Job Post (Hebrew, Live)
+POST {{baseUrl}}/api/ai/project-ai
+Authorization: Bearer 1234
+Content-Type: application/json
+
+{
+  "lang": "עברית",
+  "writingStyle": "Subtle marketing",
+  "freeText": "עובד/ת זמני/ת לפרויקט פיתוח חכם",
+  "jobRole": "מפתח/ת תוכנה - פיתוח קושחה",
+  "jobType": "משרה מלאה",
+  "yearsExp": "1-2",
+  "mustSkills": "C, C++, embedded systems, RTOS",
+  "niceSkills": "Bluetooth, CAN, OTA updates"
+}
+
+###
+
+### Project AI - Frontend Developer (Hebrew, Live)
+POST {{baseUrl}}/api/ai/project-ai
+Authorization: Bearer 1234
+Content-Type: application/json
+
+{
+  "lang": "עברית",
+  "writingStyle": "Friendly and encouraging",
+  "freeText": "הצטרף/י לצוות הפיתוח שלנו",
+  "jobRole": "מפתח/ת Frontend",
+  "jobType": "משרה מלאה",
+  "yearsExp": "0",
+  "mustSkills": "React, JavaScript, HTML, CSS",
+  "niceSkills": "TypeScript, Next.js, Redux"
+}
+
+###
+
+### Project AI - Backend Developer (Hebrew, Live)
+POST {{baseUrl}}/api/ai/project-ai
+Authorization: Bearer 1234
+Content-Type: application/json
+
+{
+  "lang": "עברית",
+  "writingStyle": "Professional",
+  "freeText": "הזדמנות ייחודית לעבוד עם טכנולוגיות מתקדמות",
+  "jobRole": "Backend Developer",
+  "jobType": "משרה מלאה",
+  "yearsExp": "2-3",
+  "mustSkills": "Node.js, MongoDB, Express, REST APIs",
+  "niceSkills": "Docker, Redis, Microservices, AWS"
+}

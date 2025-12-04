@@ -621,3 +621,162 @@ exports.pic2hesh = async () => {
   return { message: "pic2hesh endpoint response" };
 };
 
+// Generate job post using AI with specific format requirements
+exports.getProjectAI = async ({ 
+  lang = "עברית", 
+  writingStyle = "Subtle marketing", 
+  freeText, 
+  jobRole, 
+  jobType, 
+  yearsExp, 
+  mustSkills, 
+  niceSkills 
+}) => {
+  try {
+    if (!freeText || !jobRole) {
+      throw new Error("freeText and jobRole are required");
+    }
+
+    const MODEL = process.env.MODEL || "gpt-4o-mini";
+
+    // Build the prompt with all the rules and requirements
+    const prompt = `
+You are a human resources professional who recruits in online job boards.
+Your goal is to advertise a ${lang} job post in a very convincing and professional way.
+The job post must be clear, concise, and appealing to the type of candidate you want to attract.
+It must include job benefits and use three text fields only: title, description, requirements.
+
+IMPORTANT - SUPREME RULE:
+Each field (title, description, requirements) MUST be at most 300 letters in the chosen language (${lang}). Do not exceed 300 letters for any single field.
+
+The job post output MUST follow exactly this structure:
+
+||| title
+%%% description
+&&& requirements ^^^
+
+Placeholders (replace before sending):
+- %lang% -> ${lang}
+- %writingstyle% -> ${writingStyle}
+- %freetext% -> ${freeText}
+- %jobrole% -> ${jobRole}
+- %jobtype% -> ${jobType || ""}
+- %yearsexp% -> ${yearsExp || ""}
+- %mustskills% -> ${mustSkills || ""}
+- %niceskills% -> ${niceSkills || ""}
+
+KEY RULES (condensed, follow exactly):
+- If job role contains English or is English, do not translate the job role.
+- לעולם אל תרשום בטקסט של המשרה את תחום החברה.
+- אל תעשה הטיות במילה מורה; אל תעשה הטיה בביטוי "דרוש ניסיון" או "נדרשת יכולת".
+- Never write the company name.
+- Use "אחריות" instead of "אחראיות".
+- After דרוש/ה must appear the job role, then the job scope.
+- developer = מפתח/ת.
+- If the job language is ${lang}, description and requirements must be in ${lang}.
+- Title must start with ||| and be up to 200 characters.
+- Description must start with %%% and be max 300 letters (supreme rule overrides other length rules).
+- Requirements must start with &&& and end with ^^^ and be max 300 letters.
+- Use only round bullets (•) in requirements.
+- Do not write "המשרה דורשת", "דרושה למשרה", "דרוש למשרה".
+- Job type must be written only in the requirements section, not in the title.
+- For experience:
+  - 0 -> "אין צורך בניסיון קודם" or "ללא ניסיון"
+  - 1-2 -> "ניסיון של שנה-שנתיים"
+- MUST embed ${mustSkills || ""} as mandatory skills (חובה).
+- NICE TO HAVE: ${niceSkills || ""} as יתרון.
+- Use writing style: ${writingStyle} in title and description.
+- MUST embed the free text (${freeText}) once, in the first two lines of the description, in Hebrew.
+- The advert must finish with the last requirement and not include any call-to-action, emails, or company identifiers.
+- Never use emojis or the character " or /.
+- If job role includes VP, keep as-is; in Hebrew description clarify VP means סמנכ"ל.
+- Do not translate backend/frontend or other English tech terms.
+- If job role is general, put "איש/אשת" before the role.
+- If job role contains a hyphen, do not write the left side (domain) in the title.
+- End the description with the job scope phrase (e.g., "העבודה במשרה מלאה").
+
+Make sure the generated text strictly respects the 300-letters-per-field supreme rule and all other constraints above.
+`;
+
+    const response = await axios.post(
+      `${OPENAI_API_URL}/chat/completions`,
+      {
+        model: MODEL,
+        messages: [
+          { role: "system", content: "You are a precise assistant that follows instructions exactly." },
+          { role: "user", content: prompt }
+        ],
+        max_tokens: 800,
+        temperature: 0.2,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${OPENAI_API_KEY}`,
+        },
+      }
+    );
+
+    const output = response.data.choices?.[0]?.message?.content || response.data.choices?.[0]?.text;
+    
+    if (!output) {
+      throw new Error("No response from AI");
+    }
+
+    // Parse the output to extract title, description, and requirements
+    const outputText = output.trim();
+    
+    // Extract sections using regex
+    const titleMatch = outputText.match(/\|\|\|\s*(.+?)(?=%%%|$)/s);
+    const descriptionMatch = outputText.match(/%%%\s*(.+?)(?=&&&|$)/s);
+    const requirementsMatch = outputText.match(/&&&\s*(.+?)(?=\^\^\^|$)/s);
+    
+    const title = titleMatch ? titleMatch[1].trim() : "";
+    const description = descriptionMatch ? descriptionMatch[1].trim() : "";
+    const requirements = requirementsMatch ? requirementsMatch[1].trim() : "";
+    
+    // Helper function to count words
+    const countWords = (text) => {
+      return text.split(/\s+/).filter(word => word.length > 0).length;
+    };
+    
+    // Count characters for each section
+    const charCount = {
+      title: title.length,
+      description: description.length,
+      requirements: requirements.length
+    };
+    
+    // Count words for each section
+    const wordCount = {
+      title: countWords(title),
+      description: countWords(description),
+      requirements: countWords(requirements)
+    };
+
+    return {
+      lang,
+      writingStyle,
+      freeText,
+      jobRole,
+      jobType,
+      yearsExp,
+      mustSkills,
+      niceSkills,
+      output: outputText,
+      charCount,
+      wordCount,
+      parsed: {
+        title,
+        description,
+        requirements
+      }
+    };
+
+  } catch (error) {
+    const errorDetails = error?.response?.data || error.message || error;
+    console.error("Error generating job post:", errorDetails);
+    throw { message: "Failed to generate job post", details: errorDetails };
+  }
+};
+

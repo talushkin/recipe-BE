@@ -11,7 +11,8 @@ const {
   getReactQuestion,
   extractReceiptDataFromImage,
   uploadBufferToS3,
-  getSQLQuery
+  getSQLQuery,
+  getProjectAI
 } = require("../controllers/openAIController");
 
 const { 
@@ -326,6 +327,42 @@ router.post("/pic2hesh", auth, upload.single("image"), async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: error.message || "Internal server error", details: error });
+  }
+});
+
+// Route for generating job post with AI
+router.post("/project-ai", auth, async (req, res) => {
+  try {
+    const { 
+      lang = "עברית", 
+      writingStyle = "Subtle marketing", 
+      freeText, 
+      jobRole, 
+      jobType, 
+      yearsExp, 
+      mustSkills, 
+      niceSkills 
+    } = req.body;
+    
+    if (!freeText || !jobRole) {
+      return res.status(400).json({ error: "freeText and jobRole are required" });
+    }
+    
+    const result = await getProjectAI({ 
+      lang, 
+      writingStyle, 
+      freeText, 
+      jobRole, 
+      jobType, 
+      yearsExp, 
+      mustSkills, 
+      niceSkills 
+    });
+    
+    res.status(200).json(result);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: error.message || "Internal Server Error", details: error?.response?.data });
   }
 });
 
