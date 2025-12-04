@@ -22,9 +22,6 @@
     "multer": "^2.0.2",
     "node-fetch": "^3.3.2",
     "path": "^0.12.7",
-    "swagger": "^0.0.1",
-    "swagger-jsdoc": "^6.2.8",
-    "swagger-ui-express": "^5.0.1",
     "twilio": "^5.10.5",
     "ultimate-guitar": "^2.0.3",
     "yamljs": "^0.3.0"

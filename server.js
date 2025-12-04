@@ -2,8 +2,6 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 require("dotenv").config();
-const swaggerUi = require("swagger-ui-express");
-const swagger = require("./docs/index.js");
 
 const categoryRoutes = require("./routes/categoriesRoutes");
 const recipeRoutes = require("./routes/recipesRoutes");
@@ -51,25 +49,6 @@ app.get("/auth", (req, res) => {
     res.sendFile(__dirname + "/auth.html");
 });
 
-
-const swaggerUiOptions = {
-  swaggerOptions: {
-    authAction: {
-      bearerAuth: {
-        schema: {
-          type: "http",
-          in: "header",
-          name: "Authorization",
-          scheme: "bearer",
-          bearerFormat: "JWT"
-        },
-        value: "1234"
-      }
-    }
-  }
-};
-
-app.use("/docs", swaggerUi.serve, swaggerUi.setup(swagger, swaggerUiOptions));
 app.get("/", (req, res) => {
     // Remove credentials from the connection string (e.g. mongodb://user:pass@...)
     const sanitizedConnectionString = connectionString.replace(/\/\/.*?:.*?@/, "//");
