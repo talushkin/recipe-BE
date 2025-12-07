@@ -6,12 +6,23 @@ Authorization: Bearer 1234
 {
   "lang": "עברית",
   "writingStyle": "Subtle marketing",
-  "freeText": "עובד/ת זמני/ת לפרויקט פיתוח חכם",
+  "freeText": "פרויקט פיתוח מערכת חכמה לניהול IoT במפעל ייצור",
   "jobRole": "מפתח/ת תוכנה - פיתוח קושחה",
-  "jobType": "משרה מלאה",
+  "jobType": "פרויקט",
   "yearsExp": "1-2",
   "mustSkills": "C, C++, embedded systems, RTOS",
   "niceSkills": "Bluetooth, CAN, OTA updates"
+}
+
+###
+
+### Project AI - Minimal (Only freeText Required)
+POST http://localhost:5000/api/ai/project-ai
+Content-Type: application/json
+Authorization: Bearer 1234
+
+{
+  "freeText": "פרויקט פיתוח אתר אי-קומרס לחנות אופנה"
 }
 
 ###
@@ -24,9 +35,9 @@ Authorization: Bearer 1234
 {
   "lang": "עברית",
   "writingStyle": "Subtle marketing",
-  "freeText": "עובד/ת זמני/ת לפרויקט פיתוח חכם",
+  "freeText": "פרויקט פיתוח מערכת חכמה לניהול IoT במפעל ייצור",
   "jobRole": "מפתח/ת תוכנה - פיתוח קושחה",
-  "jobType": "משרה מלאה",
+  "jobType": "פרויקט",
   "yearsExp": "1-2",
   "mustSkills": "C, C++, embedded systems, RTOS",
   "niceSkills": "Bluetooth, CAN, OTA updates",

@@ -345,8 +345,8 @@ router.post("/project-ai", auth, async (req, res) => {
       charCountLimits
     } = req.body;
     
-    if (!freeText || !jobRole) {
-      return res.status(400).json({ error: "freeText and jobRole are required" });
+    if (!freeText) {
+      return res.status(400).json({ error: "freeText is required" });
     }
     
     const result = await getProjectAI({ 

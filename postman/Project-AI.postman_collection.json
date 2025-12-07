@@ -10,6 +10,43 @@
 			"name": "Local",
 			"item": [
 				{
+					"name": "Project AI - Minimal (Only freeText)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer 1234",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"freeText\": \"פרויקט פיתוח אתר אי-קומרס לחנות אופנה\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/ai/project-ai",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"ai",
+								"project-ai"
+							]
+						},
+						"description": "Generate a job post with only the required freeText parameter - the project description (minimal example)"
+					},
+					"response": []
+				},
+				{
 					"name": "Project AI - Firmware Developer (Hebrew)",
 					"request": {
 						"method": "POST",
@@ -27,7 +64,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"lang\": \"עברית\",\n  \"writingStyle\": \"Subtle marketing\",\n  \"freeText\": \"עובד/ת זמני/ת לפרויקט פיתוח חכם\",\n  \"jobRole\": \"מפתח/ת תוכנה - פיתוח קושחה\",\n  \"jobType\": \"משרה מלאה\",\n  \"yearsExp\": \"1-2\",\n  \"mustSkills\": \"C, C++, embedded systems, RTOS\",\n  \"niceSkills\": \"Bluetooth, CAN, OTA updates\"\n}"
+							"raw": "{\n  \"lang\": \"עברית\",\n  \"writingStyle\": \"Subtle marketing\",\n  \"freeText\": \"פרויקט פיתוח מערכת חכמה לניהול IoT במפעל ייצור\",\n  \"jobRole\": \"מפתח/ת תוכנה - פיתוח קושחה\",\n  \"jobType\": \"פרויקט\",\n  \"yearsExp\": \"1-2\",\n  \"mustSkills\": \"C, C++, embedded systems, RTOS\",\n  \"niceSkills\": \"Bluetooth, CAN, OTA updates\"\n}"
 						},
 						"url": {
 							"raw": "http://localhost:5000/api/ai/project-ai",
@@ -42,7 +79,7 @@
 								"project-ai"
 							]
 						},
-						"description": "Generate a Hebrew job post for a firmware developer position with 1-2 years experience"
+						"description": "Generate a Hebrew job post for a firmware developer project with 1-2 years experience"
 					},
 					"response": []
 				},
@@ -238,6 +275,44 @@
 			"name": "Production",
 			"item": [
 				{
+					"name": "Project AI - Minimal (Only freeText, Live)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer 1234",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"freeText\": \"פרויקט פיתוח אתר אי-קומרס לחנות אופנה\"\n}"
+						},
+						"url": {
+							"raw": "https://be-tan-theta.vercel.app/api/ai/project-ai",
+							"protocol": "https",
+							"host": [
+								"be-tan-theta",
+								"vercel",
+								"app"
+							],
+							"path": [
+								"api",
+								"ai",
+								"project-ai"
+							]
+						},
+						"description": "Minimal example - only freeText required (project description). AI will generate title, description, and requirements using default character limits (Production)"
+					},
+					"response": []
+				},
+				{
 					"name": "Project AI - Firmware Developer (Hebrew, Live)",
 					"request": {
 						"method": "POST",
@@ -255,7 +330,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"lang\": \"עברית\",\n  \"writingStyle\": \"Subtle marketing\",\n  \"freeText\": \"עובד/ת זמני/ת לפרויקט פיתוח חכם\",\n  \"jobRole\": \"מפתח/ת תוכנה - פיתוח קושחה\",\n  \"jobType\": \"משרה מלאה\",\n  \"yearsExp\": \"1-2\",\n  \"mustSkills\": \"C, C++, embedded systems, RTOS\",\n  \"niceSkills\": \"Bluetooth, CAN, OTA updates\"\n}"
+							"raw": "{\n  \"lang\": \"עברית\",\n  \"writingStyle\": \"Subtle marketing\",\n  \"freeText\": \"פרויקט פיתוח מערכת חכמה לניהול IoT במפעל ייצור\",\n  \"jobRole\": \"מפתח/ת תוכנה - פיתוח קושחה\",\n  \"jobType\": \"פרויקט\",\n  \"yearsExp\": \"1-2\",\n  \"mustSkills\": \"C, C++, embedded systems, RTOS\",\n  \"niceSkills\": \"Bluetooth, CAN, OTA updates\"\n}"
 						},
 						"url": {
 							"raw": "https://be-tan-theta.vercel.app/api/ai/project-ai",
@@ -271,7 +346,7 @@
 								"project-ai"
 							]
 						},
-						"description": "Generate a Hebrew job post for a firmware developer position (Production)"
+						"description": "Generate a Hebrew job post for a firmware developer project (Production)"
 					},
 					"response": []
 				},

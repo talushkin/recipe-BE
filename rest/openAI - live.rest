@@ -184,12 +184,23 @@ Content-Type: application/json
 {
   "lang": "עברית",
   "writingStyle": "Subtle marketing",
-  "freeText": "עובד/ת זמני/ת לפרויקט פיתוח חכם",
+  "freeText": "פרויקט פיתוח מערכת חכמה לניהול IoT במפעל ייצור",
   "jobRole": "מפתח/ת תוכנה - פיתוח קושחה",
-  "jobType": "משרה מלאה",
+  "jobType": "פרויקט",
   "yearsExp": "1-2",
   "mustSkills": "C, C++, embedded systems, RTOS",
   "niceSkills": "Bluetooth, CAN, OTA updates"
+}
+
+###
+
+### Project AI - Minimal (Only freeText, Live)
+POST {{baseUrl}}/api/ai/project-ai
+Authorization: Bearer 1234
+Content-Type: application/json
+
+{
+  "freeText": "פרויקט פיתוח אתר אי-קומרס לחנות אופנה"
 }
 
 ###
@@ -202,9 +213,9 @@ Content-Type: application/json
 {
   "lang": "עברית",
   "writingStyle": "Professional",
-  "freeText": "הצטרף/י לחברה מובילה",
+  "freeText": "פרויקט פיתוח אפליקציית מובייל למסחר דיגיטלי",
   "jobRole": "Full Stack Developer",
-  "jobType": "משרה מלאה",
+  "jobType": "פרויקט",
   "yearsExp": "2-3",
   "mustSkills": "React, Node.js, MongoDB",
   "niceSkills": "TypeScript, AWS",
@@ -225,9 +236,9 @@ Content-Type: application/json
 {
   "lang": "עברית",
   "writingStyle": "Friendly and encouraging",
-  "freeText": "הצטרף/י לצוות הפיתוח שלנו",
+  "freeText": "פרויקט פיתוח ממשק משתמש מתקדם לאפליקציית פינטק",
   "jobRole": "מפתח/ת Frontend",
-  "jobType": "משרה מלאה",
+  "jobType": "פרויקט",
   "yearsExp": "0",
   "mustSkills": "React, JavaScript, HTML, CSS",
   "niceSkills": "TypeScript, Next.js, Redux"
@@ -243,9 +254,9 @@ Content-Type: application/json
 {
   "lang": "עברית",
   "writingStyle": "Professional",
-  "freeText": "הזדמנות ייחודית לעבוד עם טכנולוגיות מתקדמות",
+  "freeText": "פרויקט פיתוח API ומיקרו-שירותים למערכת ענן מבוזרת",
   "jobRole": "Backend Developer",
-  "jobType": "משרה מלאה",
+  "jobType": "פרויקט",
   "yearsExp": "2-3",
   "mustSkills": "Node.js, MongoDB, Express, REST APIs",
   "niceSkills": "Docker, Redis, Microservices, AWS"

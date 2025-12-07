@@ -200,6 +200,55 @@ Content-Type: application/json
   "q": "הראה לי את כל החברות עם השמות והערים שלהן"
 }
 
+###
+
+### Project AI - Generate Job Post (Hebrew, Local)
+POST {{localUrl}}/api/ai/project-ai
+Authorization: Bearer 1234
+Content-Type: application/json
+
+{
+  "lang": "עברית",
+  "writingStyle": "Subtle marketing",
+  "freeText": "פרויקט פיתוח מערכת חכמה לניהול IoT במפעל ייצור",
+  "jobRole": "מפתח/ת תוכנה - פיתוח קושחה",
+  "jobType": "פרויקט",
+  "yearsExp": "1-2",
+  "mustSkills": "C, C++, embedded systems, RTOS",
+  "niceSkills": "Bluetooth, CAN, OTA updates"
+}
+
+###
+
+### Project AI - Minimal (Only freeText, Local)
+POST {{localUrl}}/api/ai/project-ai
+Authorization: Bearer 1234
+Content-Type: application/json
+
+{
+  "freeText": "פרויקט פיתוח אתר אי-קומרס לחנות אופנה"
+}
+
+###
+
+### Project AI - With Custom Character Limits (Local)
+POST {{localUrl}}/api/ai/project-ai
+Authorization: Bearer 1234
+Content-Type: application/json
+
+{
+  "lang": "עברית",
+  "writingStyle": "Professional",
+  "freeText": "פרויקט פיתוח אפליקציית מובייל למסחר דיגיטלי",
+  "charCountLimits": {
+    "title": 100,
+    "description": 200,
+    "requirements": 180
+  }
+}
+
+###
+
 ### WhatsApp SQL AI assistant (local)
 ### WhatsApp SQL AI assistant (local)
 POST {{localUrl}}/api/whatsapp-sql

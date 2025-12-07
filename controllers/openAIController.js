@@ -626,37 +626,43 @@ exports.getProjectAI = async ({
   lang = "עברית", 
   writingStyle = "Subtle marketing", 
   freeText, 
-  jobRole, 
-  jobType, 
-  yearsExp, 
-  mustSkills, 
-  niceSkills,
+  jobRole = "", 
+  jobType = "", 
+  yearsExp = "", 
+  mustSkills = "", 
+  niceSkills = "",
   charCountLimits = {} 
 }) => {
   try {
-    if (!freeText || !jobRole) {
-      throw new Error("freeText and jobRole are required");
+    if (!freeText) {
+      throw new Error("freeText is required");
     }
 
     // Set default character limits if not provided
     const titleLimit = charCountLimits.title || 200;
     const descriptionLimit = charCountLimits.description || 300;
     const requirementsLimit = charCountLimits.requirements || 300;
+    
+    // Calculate minimum description length (70% of limit or 50 words minimum)
+    const minDescriptionChars = Math.floor(descriptionLimit * 0.7);
+    const minDescriptionWords = 50;
 
     const MODEL = process.env.MODEL || "gpt-4o-mini";
 
     // Build the prompt with all the rules and requirements
     const prompt = `
-You are a human resources professional who recruits in online job boards.
-Your goal is to advertise a ${lang} job post in a very convincing and professional way.
-The job post must be clear, concise, and appealing to the type of candidate you want to attract.
-It must include job benefits and use three text fields only: title, description, requirements.
+You are a human resources professional who creates job postings for freelance projects and gigs.
+Your goal is to advertise a ${lang} project/job posting in a very convincing and professional way.
+The posting is for a PROJECT (פרויקט), not a full-time employee position.
+The job post must be clear, concise, and appealing to freelancers/contractors who want to work on this project.
+It must include project benefits and use three text fields only: title, description, requirements.
 
 IMPORTANT - SUPREME RULE:
 - Title MUST be at most ${titleLimit} characters in the chosen language (${lang}).
-- Description MUST be at most ${descriptionLimit} characters in the chosen language (${lang}).
+- Description MUST be at least ${minDescriptionChars} characters (70% of ${descriptionLimit}) OR at least ${minDescriptionWords} words, AND at most ${descriptionLimit} characters in the chosen language (${lang}).
 - Requirements MUST be at most ${requirementsLimit} characters in the chosen language (${lang}).
 Do not exceed these character limits for any field.
+CRITICAL: The description must be detailed and comprehensive, reaching at least 70% of the maximum allowed characters.
 
 The job post output MUST follow exactly this structure:
 
@@ -695,7 +701,7 @@ KEY RULES (condensed, follow exactly):
 - MUST embed ${mustSkills || ""} as mandatory skills (חובה).
 - NICE TO HAVE: ${niceSkills || ""} as יתרון.
 - Use writing style: ${writingStyle} in title and description.
-- MUST embed the free text (${freeText}) once, in the first two lines of the description, in Hebrew.
+- MUST embed the project description from freeText (${freeText}) in the first two lines of the description, in Hebrew. This is the main project description that explains what the project is about.
 - The advert must finish with the last requirement and not include any call-to-action, emails, or company identifiers.
 - Never use emojis or the character " or /.
 - If job role includes VP, keep as-is; in Hebrew description clarify VP means סמנכ"ל.
