@@ -22,6 +22,92 @@ Content-Type: application/json
   "text": "flowers in a field"
 }
 
+###
+
+### Create picture from text with reference image
+POST {{baseUrl}}/api/ai/image
+Authorization: Bearer 1234
+Content-Type: application/json
+
+{
+  "text": "a beautiful sunset landscape",
+  "referenceImageUrl": "https://example.com/reference-image.jpg"
+}
+
+###
+
+### Create sticker from existing image (convert to sticker style)
+POST {{baseUrl}}/api/ai/image
+Authorization: Bearer 1234
+Content-Type: application/json
+
+{
+  "text": "Convert this image into a fun cartoon sticker style with bold outlines, vibrant colors, and a white border. Make it suitable for messaging apps.",
+  "referenceImageUrl": "https://lh3.googleusercontent.com/a/ACg8ocJ7bwg-smGBB697htMqP3SWxfgCTENXZe0Zcxve22qcM_15QX8=s288-c-no"
+}
+
+###
+
+### Create sticker - Cute cat version
+POST {{baseUrl}}/api/ai/image
+Authorization: Bearer 1234
+Content-Type: application/json
+
+{
+  "text": "Transform this into a kawaii-style cute sticker with big eyes, pastel colors, and a playful expression. Add sparkles and a white outline border.",
+  "referenceImageUrl": "https://vt-photos.s3.amazonaws.com/cat-photo.jpg"
+}
+
+###
+
+### Create sticker - Minimalist emoji style
+POST {{baseUrl}}/api/ai/image
+Authorization: Bearer 1234
+Content-Type: application/json
+
+{
+  "text": "Convert to a simple minimalist emoji-style sticker with clean lines, solid colors, and a circular white background. Make it expressive and suitable for chat apps.",
+  "referenceImageUrl": "https://vt-photos.s3.amazonaws.com/portrait.jpg"
+}
+
+###
+
+### Create image with transparent background - Logo style
+POST {{baseUrl}}/api/ai/image
+Authorization: Bearer 1234
+Content-Type: application/json
+
+{
+  "text": "A modern tech company logo with a rocket ship",
+  "transparentBg": true
+}
+
+###
+
+### Create sticker with transparent background - Character
+POST {{baseUrl}}/api/ai/image
+Authorization: Bearer 1234
+Content-Type: application/json
+
+{
+  "text": "Cute cartoon cat character with big eyes, sitting pose",
+  "transparentBg": true
+}
+
+###
+
+### Create icon with transparent background - UI element
+POST {{baseUrl}}/api/ai/image
+Authorization: Bearer 1234
+Content-Type: application/json
+
+{
+  "text": "Shopping cart icon in flat design style, blue and white colors",
+  "transparentBg": true
+}
+
+###
+
 ### Create text for recipe from title
 POST {{baseUrl}}/api/ai/fill-recipe
 Authorization: Bearer 1234

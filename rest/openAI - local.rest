@@ -1,3 +1,6 @@
+@localUrl = http://localhost:5000
+@baseUrl = https://be-tan-theta.vercel.app
+
 ### Get lyrics and chords for a song
 POST {{localUrl}}/api/ai/get-song-lyrics-chords
 Authorization: Bearer 1234
@@ -7,9 +10,6 @@ Content-Type: application/json
   "title": "Radioactive",
   "artist": "Imagine Dragons"
 }
-
-@localUrl = http://localhost:5000
-@baseUrl = https://be-tan-theta.vercel.app
 
 ### Get translation for text
 POST {{localUrl}}/api/ai/translate
@@ -31,6 +31,94 @@ Content-Type: application/json
 {
   "text": "flowers in a field"
 }
+
+###
+
+### Create picture from text with reference image
+POST {{localUrl}}/api/ai/image
+Authorization: Bearer 1234
+Content-Type: application/json
+
+{
+  "text": "a beautiful sunset landscape",
+  "referenceImageUrl": "https://images.unsplash.com/photo-1599302592205-d7d683c83eea?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8dHJvcGljYWwlMjBzdW5zZXR8ZW58MHx8MHx8fDA%3D"
+}
+
+###
+
+### Create sticker from existing image (convert to sticker style)
+POST {{localUrl}}/api/ai/image
+Authorization: Bearer 1234
+Content-Type: application/json
+
+{
+  "text": "Convert this image into a fun cartoon sticker , only the head",
+  "referenceImageUrl": "https://lh3.googleusercontent.com/a/ACg8ocJ7bwg-smGBB697htMqP3SWxfgCTENXZe0Zcxve22qcM_15QX8=s288-c-no"
+  ,"transparentBg": true
+}
+
+###
+
+### Create sticker - Cute cat version
+POST {{localUrl}}/api/ai/image
+Authorization: Bearer 1234
+Content-Type: application/json
+
+{
+  "text": "Transform this into a kawaii-style cute sticker with big eyes, pastel colors, and a playful expression. Add sparkles and a white outline border.",
+  "referenceImageUrl": "https://vt-photos.s3.amazonaws.com/cat-photo.jpg",
+  "transparentBg": true
+}
+
+###
+
+### Create sticker - Minimalist emoji style
+POST {{localUrl}}/api/ai/image
+Authorization: Bearer 1234
+Content-Type: application/json
+
+{
+  "text": "Convert to a simple minimalist emoji-style sticker with clean lines, solid colors, and a circular white background. Make it expressive and suitable for chat apps.",
+  "referenceImageUrl": "https://vt-photos.s3.amazonaws.com/portrait.jpg"
+}
+
+###
+
+### Create image with transparent background - Logo style
+POST {{localUrl}}/api/ai/image
+Authorization: Bearer 1234
+Content-Type: application/json
+
+{
+  "text": "A modern tech company logo with a rocket ship",
+  "transparentBg": true
+}
+
+###
+
+### Create sticker with transparent background - Character
+POST {{localUrl}}/api/ai/image
+Authorization: Bearer 1234
+Content-Type: application/json
+
+{
+  "text": "Cute cartoon cat character with big eyes, sitting pose",
+  "transparentBg": true
+}
+
+###
+
+### Create icon with transparent background - UI element
+POST {{localUrl}}/api/ai/image
+Authorization: Bearer 1234
+Content-Type: application/json
+
+{
+  "text": "Shopping cart icon in flat design style, blue and white colors",
+  "transparentBg": true
+}
+
+###
 
 ### Create text for recipe from title
 POST {{localUrl}}/api/ai/fill-recipe

@@ -66,12 +66,18 @@ router.post("/translate", auth, async (req, res) => {
 // Route for image generation
 router.post("/image", auth, async (req, res) => {
   try {
-    const { text } = req.body; // Read from the request body
+    const { text, referenceImageUrl, transparentBg } = req.body; // Read from the request body
     if (!text) {
       return res.status(400).json({ error: "Text is required" });
     }
-    const { imageUrl, savedPath } = await createPictureFromText(text);
-    res.status(200).json({ text, imageUrl, savedPath });
+    const result = await createPictureFromText(text, referenceImageUrl, transparentBg);
+    res.status(200).json({ 
+      text, 
+      imageUrl: result.imageUrl, 
+      referenceUsed: result.referenceUsed,
+      enhancedPrompt: result.enhancedPrompt,
+      transparentBg: !!transparentBg
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: error.message || "Internal Server Error", details: error?.response?.data });

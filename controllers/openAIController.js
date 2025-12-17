@@ -139,16 +139,62 @@ exports.translateDirectly = async (text, targetLanguage = "en") => {
   }
 };
 
-exports.createPictureFromText = async (text) => {
+exports.createPictureFromText = async (text, referenceImageUrl = null, transparentBg = false) => {
   try {
-    const prompt = text;
+    // If reference image URL is provided, use GPT-4 Vision to analyze it first
+    let enhancedPrompt = text;
+    
+    // If transparent background is requested, add it to the prompt
+    if (transparentBg) {
+      enhancedPrompt = `${text}. The image should have a transparent background with no backdrop, only the main subject.`;
+      console.log("Transparent background requested");
+    }
+    
+    if (referenceImageUrl) {
+      console.log("Reference image provided, analyzing with GPT-4 Vision:", referenceImageUrl);
+      
+      // Use GPT-4 Vision to analyze the reference image
+      const visionResponse = await axios.post(
+        `${OPENAI_API_URL}/chat/completions`,
+        {
+          model: "gpt-4o-mini",
+          messages: [
+            {
+              role: "user",
+              content: [
+                { 
+                  type: "text", 
+                  text: `Analyze this reference image in detail. Describe the style, colors, composition, lighting, mood, and artistic elements. Then, based on the user's request: "${text}", create an enhanced detailed prompt for DALL-E that incorporates the visual style and elements from this reference image. Return only the enhanced prompt, no explanations.`
+                },
+                {
+                  type: "image_url",
+                  image_url: { url: referenceImageUrl }
+                }
+              ]
+            }
+          ],
+          max_tokens: 500,
+          temperature: 0.3
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${OPENAI_API_KEY}`,
+          },
+        }
+      );
+      
+      enhancedPrompt = visionResponse.data.choices[0]?.message?.content?.trim() || text;
+      console.log("Enhanced prompt based on reference:", enhancedPrompt);
+    }
+
     const response = await axios.post(
       `${OPENAI_API_URL}/images/generations`,
       {
         model: "dall-e-3",
-        prompt: prompt,
+        prompt: enhancedPrompt,
         n: 1,
-        size: "1024x1024", // changed from 256x256 to supported value
+        size: "1024x1024",
       },
       {
         headers: {
@@ -172,9 +218,14 @@ exports.createPictureFromText = async (text) => {
     const sanitizedText = text.replace(/[^a-zA-Z0-9]/g, '-');
     const filename = `${sanitizedText}-generated-image.png`;
     // Upload the image buffer to S3 using the uploadBufferToS3 utility
-    const s3Url = await uploadBufferToS3(imageBuffer, filename);
-    console.log("S3 URL:", s3Url);
-    return { imageUrl: s3Url };
+    // If S3 upload fails, it will return the original imageUrl as fallback
+    const s3Url = await uploadBufferToS3(imageBuffer, filename, imageUrl);
+    console.log("Final image URL:", s3Url);
+    return { 
+      imageUrl: s3Url || imageUrl, // Use imageUrl as fallback if s3Url is null
+      referenceUsed: !!referenceImageUrl,
+      enhancedPrompt: referenceImageUrl ? enhancedPrompt : null
+    };
   } catch (error) {
     const errorDetails = error?.response?.data || error.message || error;
     console.error("Image generation error:", errorDetails);

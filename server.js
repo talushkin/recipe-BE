@@ -10,6 +10,7 @@ const spotifyRoutes = require("./routes/spotifyRoutes");
 const youTubeRoutes = require("./routes/youTubeRoutes");
 const googleAuthRoutes = require("./routes/googleAuthRoutes");
 const logger = require("./middlewares/logger"); // 👈 מוסיפים את ה-logger
+const { checkS3Connection } = require("./utils/checkS3Connection");
 
 const whatsappSqlRoutes = require("./routes/whatsappSql");
 
@@ -49,12 +50,21 @@ app.get("/auth", (req, res) => {
     res.sendFile(__dirname + "/auth.html");
 });
 
-app.get("/", (req, res) => {
+app.get("/", async (req, res) => {
     // Remove credentials from the connection string (e.g. mongodb://user:pass@...)
     const sanitizedConnectionString = connectionString.replace(/\/\/.*?:.*?@/, "//");
+    
+    // Check S3 status
+    const s3Status = await checkS3Connection();
+    
     res.status(200).json({
         message: "Server is running",
         mongoUrl: sanitizedConnectionString,
+        s3Status: {
+            connected: s3Status.success,
+            bucket: s3Status.bucket,
+            message: s3Status.message
+        },
         routes: {
             recipes: {
                 list: "GET /api/recipes",
@@ -84,6 +94,19 @@ app.get("/", (req, res) => {
     });
 });
 
-app.listen(PORT, () => {
+app.listen(PORT, async () => {
     console.log(`Server running on port ${PORT}`);
+    
+    // Check S3 connection on startup
+    console.log("\n🔍 Checking S3 connectivity...");
+    const s3Status = await checkS3Connection();
+    console.log(s3Status.message);
+    
+    if (!s3Status.success) {
+        console.warn("⚠️  Warning: Image uploads to S3 may fail. Using fallback to original URLs.");
+        if (s3Status.error) {
+            console.warn(`   Error details: ${s3Status.error}`);
+        }
+    }
+    console.log(""); // Empty line for readability
 });
